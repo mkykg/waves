@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Waves</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+
+    <div id="container" class="container" >
+        <div id="scene" class="scene">
+            <div data-depth="0.00"><img style="width: 120%; height: 120%; " src="images/sky.jpg"></div>
+            <div data-depth="0.05"><img style="width: 110%; position: relative; left: 0%;" src="images/mountain.png"></div>
+            <div data-depth="0.10"><img style="width: 109%; position: relative; left: 5%;" src="images/wave_bg_2.png" ></div>
+            <div data-depth="0.15"><img style="width: 109%; position: relative; left: -1%;" src="images/wave_bg_1.png"></div>
+            <div data-depth="0.20"><img style="width: 105%; position: relative; left: 2.5%;" src="images/wave_bg_3.png"></div>
+            <div data-depth="0.25"><img style="width: 105%; position: relative; left: 4%;" src="images/ship_fg_1.png"></div>
+        </div>
+    </div>
+
+    <div class="games-section-wrapper">
+        <div class="search-and-button-row">
+            <input type="text" class="game-search-box" placeholder="Search games...">
+            <button id="randomGameButton" class="random-game-button">Random</button>
+        </div>
+        <div id="searchSuggestions" class="search-suggestions">
+        </div>
+        <div class="games-display" id="gamesDisplay"></div>
+    </div>
+
+    <div class="navbar-dock">
+        <a href="index.html">
+            <img src="https://www.rawshorts.com/freeicons/wp-content/uploads/2017/01/blue_repicthousebase_1484336386-1.png" alt="Home Icon" class="dock-icon">
+        </a>
+        <a href="games.html">
+            <img src="images/icon1.png" alt="Browser Icon" class="dock-icon">
+        </a>
+        <a href="media.html">
+            <img src="images/play-button.png" alt="Media Icon" class="dock-icon">
+        </a>
+        <a href="docs.html">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgqhB3HC4-MpEPQ9mOMXQ6JlQg2koqsi4ImA&s" alt="Docs Icon" class="dock-icon">
+        </a>
+        <a href="apps.html">
+            <img src="images/icons8-app-80.png" alt="Apps Icon" class="dock-icon">
+        </a>
+        <a href="https://discord.gg/thTDFEUVwe">
+            <img src="https://support.discord.com/hc/user_images/PRywUXcqg0v5DD6s7C3LyQ.jpeg" alt="Apps Icon" class="dock-icon">
+        </a>
+         <a href="settings.html">
+            <img src="https://media.istockphoto.com/id/1416937202/vector/settings-or-gear-icon-cog-setting-vector-illustration.jpg?s=612x612&w=0&k=20&c=3vVNW4ssuNPwKUMT5HSMEbUlknZmp5FeEBF1eZTzJYA=" alt="Apps Icon" class="dock-icon">
+        </a>
+    </div>
+
+    <script src="js/parallax.min.js"></script>
+    <script src="js/weather.js"></script>
+    <script>
+    var scene = document.getElementById('scene');
+    var parallax = new Parallax(scene);
+
+    elements = document.querySelectorAll('#scene > div');
+    for(var x = 1;x<elements.length;x++){
+        elements[x].style.top="";
+        elements[x].style.bottom="0px"
+    }  
+    elements[0].children[0].style.position="relative";
+    elements[0].children[0].style.bottom="150px";
+    elements[1].children[0].style.position="relative";
+    elements[1].children[0].style.bottom="-85px";
+    elements[2].children[0].style.position="relative";
+    elements[2].children[0].style.bottom="-85px";
+    elements[3].children[0].style.position="relative";
+    elements[3].children[0].style.bottom="-150px";
+    elements[5].children[0].style.position="relative";
+    elements[5].children[0].style.bottom="50px";
+
+    function ResizeFn(){
+        elements[0].style.height = window.outerHeight+"px"
+    }
+    ResizeFn();
+    window.onresize=e=>ResizeFn();
+
+    const gamesDisplay = document.getElementById('gamesDisplay');
+    const gameSearchBox = document.querySelector('.game-search-box');
+    const randomGameButton = document.getElementById('randomGameButton');
+    const searchSuggestions = document.getElementById('searchSuggestions');
+
+    const games = [
+        { name: "Game 1: Adventure Quest", image: "images/game_placeholder_1.png" },
+        { name: "Game 2: Space Explorer", image: "images/game_placeholder_2.png" },
+        { name: "Game 3: Mystic Forest", image: "images/game_placeholder_3.png" },
+        { name: "Game 4: City Builder Tycoon", image: "images/game_placeholder_4.png" },
+        { name: "Game 5: Racing Rivals", image: "images/game_placeholder_5.png" },
+        { name: "Game 6: Puzzle Mania", image: "images/game_placeholder_6.png" },
+        { name: "Game 7: Zombie Survival", image: "images/game_placeholder_7.png" },
+        { name: "Game 8: Fantasy Kingdom", image: "images/game_placeholder_8.png" },
+        { name: "Game 9: Ocean Explorer", image: "images/game_placeholder_9.png" },
+        { name: "Game 10: Dragon Slayer", image: "images/game_placeholder_10.png" }
+    ];
+
+    function displayGames(gameList, spotlightGame = null) {
+        gamesDisplay.innerHTML = '';
+        if (gameList.length === 0) {
+            gamesDisplay.innerHTML = '<p style="color: white; text-align: center;">No games found.</p>';
+            return;
+        }
+        gameList.forEach(game => {
+            const gameContainer = document.createElement('div');
+            gameContainer.classList.add('game-container');
+            if (spotlightGame && game.name === spotlightGame.name) {
+                gameContainer.classList.add('spotlight');
+            }
+            gameContainer.innerHTML = `
+                <img src="${game.image}" alt="${game.name}">
+                <div class="game-info">
+                    <h3>${game.name}</h3>
+                </div>
+            `;
+            gamesDisplay.appendChild(gameContainer);
+        });
+    }
+
+    function selectRandomGame() {
+        if (games.length === 0) {
+            gamesDisplay.innerHTML = '<p style="color: white; text-align: center;">No games available to pick.</p>';
+            return;
+        }
+        const randomIndex = Math.floor(Math.random() * games.length);
+        const randomGame = games[randomIndex];
+        displayGames([randomGame], randomGame);
+        gameSearchBox.value = randomGame.name;
+        searchSuggestions.classList.remove('active');
+    }
+
+    function showSuggestions(searchTerm) {
+        searchSuggestions.innerHTML = '';
+        if (searchTerm.length === 0) {
+            searchSuggestions.classList.remove('active');
+            displayGames(games);
+            return;
+        }
+
+        const filteredGames = games.filter(game =>
+            game.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        if (filteredGames.length > 0) {
+            searchSuggestions.classList.add('active');
+            filteredGames.forEach((game, index) => {
+                const suggestionItem = document.createElement('div');
+                suggestionItem.classList.add('suggestion-item');
+                if (index === 0 || game.name.toLowerCase() === searchTerm.toLowerCase()) {
+                    suggestionItem.classList.add('spotlight');
+                }
+                suggestionItem.innerHTML = `
+                    <img src="${game.image}" alt="${game.name}">
+                    <span>${game.name}</span>
+                `;
+                suggestionItem.addEventListener('click', () => {
+                    gameSearchBox.value = game.name;
+                    searchSuggestions.classList.remove('active');
+                    displayGames([game], game);
+                });
+                searchSuggestions.appendChild(suggestionItem);
+            });
+        } else {
+            searchSuggestions.classList.remove('active');
+            gamesDisplay.innerHTML = '<p style="color: white; text-align: center;">No games found for your search.</p>';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        displayGames(games);
+    });
+
+    gameSearchBox.addEventListener('input', (event) => {
+        const searchTerm = event.target.value;
+        showSuggestions(searchTerm);
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!gamesDisplay.contains(event.target) && !gameSearchBox.contains(event.target) && !searchSuggestions.contains(event.target)) {
+            searchSuggestions.classList.remove('active');
+        }
+    });
+
+    randomGameButton.addEventListener('click', selectRandomGame);
+    </script>
+</body>
+</html>
