@@ -622,13 +622,13 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 80%;
-    max-width: 600px;
-    max-height: 80%;
+    max-width: 3in;
+    max-height: 3in;
     overflow-y: auto;
     padding: 25px;
     box-sizing: border-box;
     display: flex;
-    flex-direction: column; /* This keeps the wrapper's main content (row + display) stacked */
+    flex-direction: column; 
     align-items: center;
     background-color: rgba(255, 255, 255, 0.08);
     border-radius: 20px;
@@ -640,14 +640,14 @@ body {
 
 .search-and-button-row {
     display: flex;
-    gap: 15px; /* Space between search box and button */
-    width: 100%; /* Take full width of the wrapper */
-    justify-content: center; /* Center horizontally within the wrapper */
-    margin-bottom: 25px; /* Space below the row */
+    gap: 15px; 
+    width: 100%; 
+    justify-content: center; 
+    margin-bottom: 25px;
 }
 
 .game-search-box {
-    flex-grow: 1; /* Allow search box to take available space */
+    flex-grow: 1; 
     padding: 14px 20px;
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.4);
@@ -726,12 +726,12 @@ body {
         border-radius: 0;
     }
     .games-section-wrapper {
-        width: 95%;
+        width: 3in;
         padding: 10px;
         top: 40%;
     }
     .search-and-button-row {
-        flex-direction: column; /* Stack on small screens */
+        flex-direction: column;
         gap: 10px;
         margin-bottom: 15px;
     }
@@ -740,7 +740,7 @@ body {
         margin-bottom: 0; /* Remove specific margin here as gap handles it */
     }
     .random-game-button {
-        width: 100%; /* Full width when stacked */
+        width: 100%; 
         margin-bottom: 0;
     }
     .games-display {
