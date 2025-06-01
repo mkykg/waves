@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Waves</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .chatpage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 999;
+        }
+
+        .chat-screen {
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            position: absolute;
+            margin-bottom: .5in;
+            flex-direction: column;
+            width: 80vw;
+            height: 80vh;
+            max-width: 600px;
+            max-height: 800px;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #333;
+            animation: floatIn 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+            overflow: hidden;
+        }
+
+        .chats-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        .chats-header .header-title {
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .chats-header .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .new-chat-button, .new-group-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.2s ease;
+        }
+
+        .new-chat-button:hover, .new-group-button:hover {
+            background-color: #0056b3;
+        }
+
+        .chats-list-area {
+            flex-grow: 1;
+            overflow-y: auto;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-list-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .chat-list-item:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .chat-list-pfp {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .chat-info {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-name {
+            font-weight: bold;
+            font-size: 1em;
+            margin-bottom: 2px;
+        }
+
+        .last-message {
+            font-size: 0.85em;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        .chat-header .header-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-pfp {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .back-to-list-button, .more-options-button {
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #555;
+            padding: 0 5px;
+        }
+
+        .message-area {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .message {
+            background-color: #fff;
+            border-radius: 18px;
+            padding: 10px 15px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            max-width: 75%;
+            word-wrap: break-word;
+            line-height: 1.4;
+            font-size: 0.95em;
+        }
+
+        .sent-message {
+            align-self: flex-end;
+            background-color: #e2fddf;
+            border-bottom-right-radius: 4px;
+        }
+
+        .received-message {
+            align-self: flex-start;
+            background-color: #ffffff;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-input-area {
+            display: flex;
+            padding: 10px 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.4);
+            background-color: rgba(255, 255, 255, 0.5);
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            font-size: 1em;
+            background-color: rgba(255, 255, 255, 0.8);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .chat-input:focus {
+            border-color: #888;
+        }
+
+        .send-button, .camera-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .send-button:hover, .camera-button:hover {
+            background-color: #0056b3;
+        }
+
+        .navbar-dock {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 15px;
+            border-radius: 15px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .dock-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .dock-icon:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes floatIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="container" class="container">
+        <div id="scene">
+            <div data-depth="0.00"><img style="width: 120%; height: 120%; " src="images/sky.jpg"></div>
+            <div data-depth="0.05"><img style="width: 110%; position: relative; left: 0%;" src="images/mountain.png"></div>
+            <div data-depth="0.10"><img style="width: 109%; position: relative; left: 5%;" src="images/wave_bg_2.png" ></div>
+            <div data-depth="0.15"><img style="width: 109%; position: relative; left: -1%;" src="images/wave_bg_1.png"></div>
+            <div data-depth="0.20"><img style="width: 105%; position: relative; left: 2.5%;" src="images/wave_bg_3.png"></div>
+            <div data-depth="0.25"><img style="width: 105%; position: relative; left: 4%;" src="images/ship_fg_1.png"></div>
+        </div>
+    </div>
+
+    <div class="chatpage">
+        <div id="chatsListScreen" class="chat-screen">
+            <div class="chats-header">
+                <span class="header-title">Chats</span>
+                <div class="header-actions">
+                    <button class="new-chat-button">➕ New Chat</button>
+                    <button class="new-group-button">👥 New Group</button>
+                </div>
+            </div>
+            <div class="chats-list-area">
+                <div class="chat-list-item" data-chat-type="individual" data-chat-id="friend1" data-chat-name="Friend One" data-chat-pfp="https://via.placeholder.com/50/FF6347/FFFFFF?text=F1">
+                    <img src="https://via.placeholder.com/50/FF6347/FFFFFF?text=F1" alt="Friend 1 PFP" class="chat-list-pfp">
+                    <div class="chat-info">
+                        <div class="chat-name">Friend One</div>
+                        <div class="last-message">Hey, how are you?</div>
+                    </div>
+                </div>
+                <div class="chat-list-item" data-chat-type="individual" data-chat-id="friend2" data-chat-name="Friend Two" data-chat-pfp="https://via.placeholder.com/50/4682B4/FFFFFF?text=F2">
+                    <img src="https://via.placeholder.com/50/4682B4/FFFFFF?text=F2" alt="Friend 2 PFP" class="chat-list-pfp">
+                    <div class="chat-info">
+                        <div class="chat-name">Friend Two</div>
+                        <div class="last-message">Ok, see you later!</div>
+                    </div>
+                </div>
+                <div class="chat-list-item" data-chat-type="group" data-chat-id="groupA" data-chat-name="Team Project" data-chat-pfp="https://via.placeholder.com/50/DA70D6/FFFFFF?text=GrpA">
+                    <img src="https://via.placeholder.com/50/DA70D6/FFFFFF?text=GrpA" alt="Group A PFP" class="chat-list-pfp">
+                    <div class="chat-info">
+                        <div class="chat-name">Team Project</div>
+                        <div class="last-message">User X: Meeting tomorrow?</div>
+                    </div>
+                </div>
+                <div class="chat-list-item" data-chat-type="group" data-chat-id="groupB" data-chat-name="Family Chat" data-chat-pfp="https://via.placeholder.com/50/32CD32/FFFFFF?text=GrpB">
+                    <img src="https://via.placeholder.com/50/32CD32/FFFFFF?text=GrpB" alt="Group B PFP" class="chat-list-pfp">
+                    <div class="chat-info">
+                        <div class="chat-name">Family Chat</div>
+                        <div class="last-message">Mom: Dinner at 7!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="singleChatScreen" class="chat-screen" style="display: none;">
+            <div class="chat-header">
+                <span class="back-to-list-button">←</span>
+                <div class="header-info">
+                    <img src="https://via.placeholder.com/40" alt="Chat PFP" class="chat-pfp" id="currentChatPfp">
+                    <span id="currentChatName"></span>
+                </div>
+                <span class="more-options-button">...</span>
+            </div>
+            <div class="message-area">
+                <div class="message received-message">Hey there!</div>
+                <div class="message sent-message">What's up?</div>
+                <div class="message received-message">Just chilling, hbu?</div>
+                <div class="message sent-message">Same! About to watch a movie.</div>
+                <div class="message received-message">Cool! Which one?</div>
+                <div class="message sent-message">"The Matrix" for the hundredth time.</div>
+                <div class="message received-message">Haha, classic! Enjoy!</div>
+                <div class="message sent-message">Thanks, you too!</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" placeholder="Send a chat..." class="chat-input">
+                <button class="send-button">▲</button>
+                <button class="camera-button">📸</button>
+            </div>
+        </div>
+    </div>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1656502157005715"
+     crossorigin="anonymous"></script>
+
+    <div class="navbar-dock">
+        <a href="games.html">
+            <img src="images/icon1.png" alt="Browser Icon" class="dock-icon">
+        </a>
+ 
+        <a href="docs.html">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgqhB3HC4-MpEPQ9mOMXQ6JlQg2koqsi4ImA&s" alt="Docs Icon" class="dock-icon">
+        </a>
+          <a href="ai.html">
+            <img src="https://cdn-icons-png.flaticon.com/512/6985/6985703.png" alt="Apps Icon" class="dock-icon">
+        </a>
+         <a href="index.html">
+            <img src="https://www.rawshorts.com/freeicons/wp-content/uploads/2017/01/blue_repicthousebase_1484336386-1.png" alt="Apps Icon" class="dock-icon">
+        </a>
+        <a href="https://discord.gg/thTDFEUVwe">
+            <img src="https://support.discord.com/hc/user_images/PRywUXcqg0v5DD6s7C3LyQ.jpeg" alt="Apps Icon" class="dock-icon">
+        </a>
+
+         <a href="settings.html">
+            <img src="https://media.istockphoto.com/id/1416937202/vector/settings-or-gear-icon-cog-setting-vector-illustration.jpg?s=612x612&w=0&k=20&c=3vVNW4ssuNPwKUMT5HSMEbUlknZmp5FeEBF1eZTzJYA=" alt="Apps Icon" class="dock-icon">
+        </a>
+        </div>
+
+    <script src="js/parallax.min.js"></script>
+    <script src="js/weather.js"></script>
+    <script>
+    var scene = document.getElementById('scene');
+    var parallax = new Parallax(scene);
+
+    elements = document.querySelectorAll('#scene > div');
+    for(var x = 1;x<elements.length;x++){
+        elements[x].style.top="";
+        elements[x].style.bottom="0px"
+    }  
+    elements[0].children[0].style.position="relative";
+    elements[0].children[0].style.bottom="150px";
+    elements[1].children[0].style.position="relative";
+    elements[1].children[0].style.bottom="-85px";
+    elements[2].children[0].style.position="relative";
+    elements[2].children[0].style.bottom="-85px";
+    elements[3].children[0].style.position="relative";
+    elements[3].children[0].style.bottom="-150px";
+    elements[5].children[0].style.position="relative";
+    elements[5].children[0].style.bottom="50px";
+
+    function ResizeFn(){
+        elements[0].style.height = window.outerHeight+"px"
+    }
+    ResizeFn();
+    window.onresize=e=>ResizeFn();
+
+    const chatsListScreen = document.getElementById('chatsListScreen');
+    const singleChatScreen = document.getElementById('singleChatScreen');
+    const chatListItems = document.querySelectorAll('.chat-list-item');
+    const backToListButton = document.querySelector('.back-to-list-button');
+    const currentChatPfp = document.getElementById('currentChatPfp');
+    const currentChatName = document.getElementById('currentChatName');
+
+    function showScreen(screenId) {
+        if (screenId === 'chatsListScreen') {
+            chatsListScreen.style.display = 'flex';
+            singleChatScreen.style.display = 'none';
+        } else if (screenId === 'singleChatScreen') {
+            chatsListScreen.style.display = 'none';
+            singleChatScreen.style.display = 'flex';
+        }
+    }
+
+    chatListItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const chatName = item.dataset.chatName;
+            const chatPfp = item.dataset.chatPfp;
+            currentChatName.textContent = chatName;
+            currentChatPfp.src = chatPfp;
+            showScreen('singleChatScreen');
+        });
+    });
+
+    backToListButton.addEventListener('click', () => {
+        showScreen('chatsListScreen');
+    });
+
+    showScreen('chatsListScreen');
+    </script>
+</body>
+</html>
