@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Style</title>
+</head>
+<body>
+    <style>
+        body {
+            background: #e5e7eb;
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .bg-blur {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background: #e5e7eb;
+            overflow: hidden;
+        }
+        .bg-blur::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url('../images/blur-bg.png') center/cover no-repeat;
+            opacity: 0.35;
+            filter: blur(4px);
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+        }
+
+        .header-title {
+            font-size: 72px;
+            font-weight: 700;
+            margin-top: 60px;
+            margin-left: 80px;
+            letter-spacing: 2px;
+        }
+
+        .header-desc {
+            font-size: 28px;
+            font-weight: 400;
+            margin-left: 80px;
+            margin-top: 12px;
+            letter-spacing: 1px;
+        }
+
+        .opera-icon-preview {
+            width: 300px;
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+            position: absolute;
+            left: 280px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .opera-icon-preview img, .opera-icon-preview video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .wallpaper-options-container {
+            position: absolute;
+            right: 80px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            background: rgba(255,255,255,0.85);
+            padding: 20px;
+            border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .wallpaper-category-title {
+            grid-column: 1 / -1;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .wallpaper-option {
+            width: 120px;
+            height: 80px;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: border-color 0.2s, transform 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+
+        .wallpaper-option:hover {
+            transform: translateY(-2px);
+        }
+
+        .wallpaper-option.selected {
+            border-color: #007bff;
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+        }
+
+        .wallpaper-option img, .wallpaper-option video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .button-row {
+            position: absolute;
+            bottom: 60px;
+            left: 0;
+            width: 100vw;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 80px;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            background: rgba(255,255,255,0.7);
+            color: #222;
+            border: none;
+            border-radius: 24px;
+            padding: 12px 36px;
+            font-size: 18px;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 0 4px 24px 0 rgba(0,0,0,0.07);
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            outline: none;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 6px 32px 0 rgba(0,0,0,0.10);
+        }
+
+        .btn-primary {
+            background: #fff;
+            color: #222;
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            background: #f3f4f6;
+            color: #222;
+        }
+    </style>
+    <div class="bg-blur"></div>
+    <div class="header-title">What's your style?</div>
+    <div class="header-desc">Pick a wallpaper</div>
+
+    <div id="operaIconPreview" class="opera-icon-preview">
+        <img src="https://w0.peakpx.com/wallpaper/164/146/HD-wallpaper-opera-abstract-dark.jpg" alt="Wallpaper Preview">
+    </div>
+
+    <div class="wallpaper-options-container">
+        <div class="wallpaper-category-title">OPERA AIR</div>
+        <div class="wallpaper-option" data-wallpaper-type="image" data-wallpaper="https://cdn-production-opera-website.operacdn.com/staticfiles/assets/images/main/air/air-video-cover.d120adce53dc.jpg">
+            <img src="https://cdn-production-opera-website.operacdn.com/staticfiles/assets/images/main/air/air-video-cover.d120adce53dc.jpg" alt="Opera Air">
+        </div>
+        <div class="wallpaper-option" data-wallpaper-type="image" data-wallpaper="https://w0.peakpx.com/wallpaper/164/146/HD-wallpaper-opera-abstract-dark.jpg">
+            <img src="https://w0.peakpx.com/wallpaper/164/146/HD-wallpaper-opera-abstract-dark.jpg" alt="Dark Abstract">
+        </div>
+        <div class="wallpaper-option" data-wallpaper-type="image" data-wallpaper="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/97585049-4b82-4e0c-a211-4d76ee546fd7/dh3izjx-f1358a01-9473-4ee0-8f26-b8f9de44b118.png/v1/fill/w_1280,h_720/opera_gx_dark_after_eight__1080p__by_finity2002_dh3izjx-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzIwIiwicGF0aCI6IlwvZlwvOTc1ODUwNDktNGI4Mi00ZTBjLWEyMTEtNGQ3NmVlNTQ2ZmQ3XC9kaDNpemp4LWYxMzU4YTAxLTk0NzMtNGVlMC04ZjI2LWI4ZjlkZTQ0YjExOC5wbmciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.QNfZ3szNdA-Eh03L0IwhHGJKtj51FpfmDqA9ezy4NB4">
+            <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/97585049-4b82-4e0c-a211-4d76ee546fd7/dh3izjx-f1358a01-9473-4ee0-8f26-b8f9de44b118.png/v1/fill/w_1280,h_720/opera_gx_dark_after_eight__1080p__by_finity2002_dh3izjx-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzIwIiwicGF0aCI6IlwvZlwvOTc1ODUwNDktNGI4Mi00ZTBjLWEyMTEtNGQ3NmVlNTQ2ZmQ3XC9kaDNpemp4LWYxMzU4YTAxLTk0NzMtNGVlMC04ZjI2LWI4ZjlkZTQ0YjExOC5wbmciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.QNfZ3szNdA-Eh03L0IwhHGJKtj51FpfmDqA9ezy4NB4" alt="Opera GX Dark">
+        </div>
+        <div class="wallpaper-option" data-wallpaper-type="image" data-wallpaper="https://addons-media.operacdn.com/media/CACHE/images/themes/55/193455/2.1-rev1/images/00460bb3aa952c6f011bd4457f0ab7e7/cacc4a635c4e42109eba4ccb95df78e6.jpg">
+            <img src="https://addons-media.operacdn.com/media/CACHE/images/themes/55/193455/2.1-rev1/images/00460bb3aa952c6f011bd4457f0ab7e7/cacc4a635c4e42109eba4ccb95df78e6.jpg" alt="Opera Theme">
+        </div>
+    </div>
+
+    <div class="button-row">
+        <button class="btn" id="laterBtn">I will do it later</button>
+        <button class="btn btn-primary" id="nextBtn">Next</button>
+    </div>
+
+    <script>
+        const operaIconPreview = document.getElementById('operaIconPreview');
+        const wallpaperOptions = document.querySelectorAll('.wallpaper-option');
+        const nextBtn = document.getElementById('nextBtn');
+        const laterBtn = document.getElementById('laterBtn');
+
+        let selectedWallpaper = null;
+        let selectedWallpaperType = null;
+
+        wallpaperOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                wallpaperOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+
+                selectedWallpaper = option.dataset.wallpaper;
+                selectedWallpaperType = option.dataset.wallpaperType;
+
+                if (selectedWallpaperType === 'video') {
+                    operaIconPreview.innerHTML = `<video src="${selectedWallpaper}" autoplay loop muted playsinline></video>`;
+                } else {
+                    operaIconPreview.innerHTML = `<img src="${selectedWallpaper}" alt="Wallpaper Preview">`;
+                }
+            });
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (selectedWallpaper) {
+                localStorage.setItem('selectedWallpaper', selectedWallpaper);
+                localStorage.setItem('selectedWallpaperType', selectedWallpaperType);
+            } else {
+                localStorage.removeItem('selectedWallpaper');
+                localStorage.removeItem('selectedWallpaperType');
+            }
+            window.location.href = 'search.html';
+        });
+
+        laterBtn.addEventListener('click', () => {
+            localStorage.removeItem('selectedWallpaper');
+            localStorage.removeItem('selectedWallpaperType');
+            window.location.href = 'search.html';
+        });
+
+        const defaultWallpaper = "https://w0.peakpx.com/wallpaper/164/146/HD-wallpaper-opera-abstract-dark.jpg";
+        const defaultWallpaperType = 'image';
+
+        const storedWallpaper = localStorage.getItem('selectedWallpaper');
+        const storedWallpaperType = localStorage.getItem('selectedWallpaperType');
+
+        if (storedWallpaper && storedWallpaperType) {
+            selectedWallpaper = storedWallpaper;
+            selectedWallpaperType = storedWallpaperType;
+            if (selectedWallpaperType === 'video') {
+                operaIconPreview.innerHTML = `<video src="${selectedWallpaper}" autoplay loop muted playsinline></video>`;
+            } else {
+                operaIconPreview.innerHTML = `<img src="${selectedWallpaper}" alt="Wallpaper Preview">`;
+            }
+            wallpaperOptions.forEach(option => {
+                if (option.dataset.wallpaper === selectedWallpaper) {
+                    option.classList.add('selected');
+                }
+            });
+        } else {
+            operaIconPreview.innerHTML = `<img src="${defaultWallpaper}" alt="Wallpaper Preview">`;
+        }
+    </script>
+</body>
+</html>
