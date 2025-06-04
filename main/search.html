@@ -1,3 +1,4 @@
+<!-- Thanks to been (bbbeen__been) for helping me make it dark mode! -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +18,7 @@
             justify-content: center;
             color: white;
             font-family: 'Segoe UI', Arial, sans-serif;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
         }
         .background-content {
             position: fixed;
@@ -35,9 +36,9 @@
             top: 50%;
             transform: translateY(-50%);
             width: 56px;
-            background: rgba(230,230,220,0.85);
+            background: rgba(0, 0, 0, 0.7);
             border-radius: 24px;
-            box-shadow: 0 2px 16px 0 rgba(0,0,0,0.10);
+            box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.7);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -53,12 +54,12 @@
             justify-content: center;
             border-radius: 14px;
             margin: 0;
-            background: none;
+            background: rgba(0, 0, 0, 0.7);
             transition: background 0.2s;
             cursor: pointer;
         }
         .opera-sidebar .nav-icon:hover, .opera-sidebar .nav-icon.active {
-            background: rgba(255,255,255,0.7);
+            background: rgba(0, 0, 0, 0.5);
         }
         .opera-sidebar .nav-icon img {
             width: 22px;
@@ -85,6 +86,7 @@
             border-radius: 50%;
             overflow: hidden;
             z-index: 2;
+            background: rgba(0, 0, 0, 0.7);
         }
 
         .top-bar-container {
@@ -98,7 +100,7 @@
             justify-content: space-between;
             padding: 0 10px 0 10px;
             box-sizing: border-box;
-            background: rgba(0, 0, 0, 0.25);
+            background: rgba(0, 0, 0, 0.7);
             z-index: 100;
             background-image: linear-gradient(to right, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.3) 100%);
             backdrop-filter: blur(8px);
@@ -118,7 +120,7 @@
             height: 32px;
             padding: 0 10px 0 14px;
             border-radius: 18px;
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.7);
             color: #d8e0e0;
             font-size: 13px;
             font-weight: 500;
@@ -129,7 +131,7 @@
         }
 
         .tab:hover {
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(0, 0, 0, 0.5);
         }
 
         .tab i.bi {
@@ -139,10 +141,10 @@
             transform: translateY(-0.5px);
         }
         
-        .tab:nth-child(1) { background-color: rgba(255,255,255,0.25); }
-        .tab:nth-child(2) { background-color: rgba(255,255,255,0.1); }
-        .tab:nth-child(3) { background-color: rgba(255,255,255,0.1); }
-        .tab:nth-child(4) { background-color: rgba(255,255,255,0.25); }
+        .tab:nth-child(1) { background-color: rgba(0, 0, 0, 0.7); }
+        .tab:nth-child(2) { background-color: rgba(0, 0, 0, 0.5); }
+        .tab:nth-child(3) { background-color: rgba(0, 0, 0, 0.7); }
+        .tab:nth-child(4) { background-color: rgba(0, 0, 0, 0.5); }
 
         .tab .close-tab-icon {
             font-size: 12px;
@@ -178,7 +180,7 @@
             display: flex;
             align-items: center;
             height: 38px;
-            background-color: rgba(255, 255, 255, 0.12);
+            background-color: rgba(0, 0, 0, 0.7);
             border-radius: 19px;
             margin: 0 10px;
             padding: 0 10px;
@@ -286,7 +288,7 @@
                 <i class="bi bi-x close-tab-icon"></i>
             </div>
             <div class="tab" data-tab-id="4">
-                <i class="bi bi-grid-3x3-gap-fill"></i>
+                <i class="bi bi-grid-3x3-gap"></i>
                 <span>Speed Dial</span>
                 <i class="bi bi-x close-tab-icon"></i>
             </div>
@@ -331,6 +333,9 @@
         <div class="nav-icon">
             <i class="bi bi-google-play"></i>
         </div>
+        <div class="nav-icon">
+            <i class="bi bi-balloon-heart-fill"></i>
+        </div>
     </div>
 
     <script>
@@ -347,7 +352,7 @@
                 backgroundContainer.style.backgroundPosition = 'center';
             }
         } else {
-            backgroundContainer.style.backgroundImage = `url('https://w0.peakpx.com/wallpaper/164/146/HD-wallpaper-opera-abstract-dark.jpg')`;
+            backgroundContainer.style.backgroundImage = `url('R.jpg')`;
             backgroundContainer.style.backgroundSize = 'cover';
             backgroundContainer.style.backgroundPosition = 'center';
         }

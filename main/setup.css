@@ -5,7 +5,12 @@ body {
     font-family: 'Segoe UI', Arial, sans-serif;
     overflow: hidden;
 }
-
+.loginlogo{
+    display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%; 
+}
 .bg-blur {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -41,6 +46,7 @@ body {
     margin-left: 80px;
     margin-top: 12px;
     letter-spacing: 1px;
+    margin-bottom: 3in;
 }
 
 .opera-icon {
