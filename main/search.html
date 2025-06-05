@@ -346,6 +346,76 @@
     <script src="/active/uv/uv.config.js"></script>
     <script src="/assets/js/register.js"></script>
     <script>
+
+        async function registerSW() {
+            try {
+                if (!navigator.serviceWorker) {
+                    throw new Error("Service workers not supported");
+                }
+                
+                await navigator.serviceWorker.register('/active/uv/sw.js', {
+                    scope: __uv$config.prefix
+                });
+                
+                console.log('Service worker registered successfully');
+            } catch (err) {
+                console.error('Service worker registration failed:', err);
+                alert('Proxy initialization failed. Please refresh the page.');
+            }
+        }
+        
+  
+        function generateSearchUrl(query) {
+            try {
+              
+                if (/^https?:\/\//i.test(query)) {
+                    return query;
+                }
+                
+           
+                if (/^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}/.test(query)) {
+                    return `https://${query}`;
+                }
+                return `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+            } catch (err) {
+                console.error('Error generating search URL:', err);
+                return `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+        
+            await registerSW();
+            
+    
+            const searchInput = document.getElementById('searchInput');
+            
+            searchInput.addEventListener('keypress', async function(e) {
+                if (e.key === 'Enter') {
+                    const query = this.value.trim();
+                    if (!query) return;
+
+                    try {
+                        const rawUrl = generateSearchUrl(query);
+                        const encoded = __uv$config.encodeUrl(rawUrl);
+                        const proxyUrl = __uv$config.prefix + encoded;
+                        
+               
+                        const test = await fetch(proxyUrl, { method: 'HEAD' });
+                        if (!test.ok) throw new Error('Proxy error');
+                        
+                        window.location.href = proxyUrl;
+                    } catch (err) {
+                        console.error('Proxy error:', err);
+                        alert('Could not reach the site. The proxy might be down or the URL is invalid.');
+                    }
+                }
+            });
+        });
+
+
+
+
         const backgroundContainer = document.getElementById('backgroundContainer');
         const selectedWallpaper = localStorage.getItem('selectedWallpaper');
         const selectedWallpaperType = localStorage.getItem('selectedWallpaperType');
