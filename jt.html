@@ -334,11 +334,11 @@
     <div class="waves-overlay"></div>
 
     <div class="speed-dial-container" id="speedDialContainer">
-
+       
     </div>
 
     <div class="iframe-container" id="iframeContainer">
-        <iframe id="contentFrame" name="contentFrame"></iframe>
+        <iframe id="contentFrame" name="contentFrame" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
     </div>
 
     <div class="top-bar-container">
@@ -414,9 +414,8 @@
     <script src="/active/uv/uv.sw.js"></script>
     <script src="/assets/js/register.js"></script>
     <script>
+        
         const backgroundContainer = document.getElementById('backgroundContainer');
-        const selectedWallpaper = localStorage.getItem('selectedWallpaper');
-        const selectedWallpaperType = localStorage.getItem('selectedWallpaperType');
         const iframeContainer = document.getElementById('iframeContainer');
         const contentFrame = document.getElementById('contentFrame');
         const speedDialContainer = document.getElementById('speedDialContainer');
@@ -425,27 +424,101 @@
         const forwardButton = document.getElementById('forwardButton');
         const refreshButton = document.getElementById('refreshButton');
         const searchInput = document.getElementById('searchInput');
+        const tabGroup = document.getElementById('tabGroup');
+        const addTabButton = document.getElementById('addTabButton');
 
+        let currentUrl = '';
+        let tabCounter = 4;
 
-        const uv = new UV();
-        
-        if (selectedWallpaper && selectedWallpaperType) {
-            if (selectedWallpaperType === 'video') {
-                backgroundContainer.innerHTML = `<video src="${selectedWallpaper}" autoplay loop muted playsinline class="background-content"></video>`;
+        function init() {
+            loadWallpaper();
+            setupEventListeners();
+            
+            if (window.location.hash) {
+                const url = window.location.hash.substring(1);
+                if (url) {
+                    navigateTo(url);
+                }
+            }
+        }
+
+     
+        function loadWallpaper() {
+            const selectedWallpaper = localStorage.getItem('selectedWallpaper');
+            const selectedWallpaperType = localStorage.getItem('selectedWallpaperType');
+
+            if (selectedWallpaper && selectedWallpaperType) {
+                if (selectedWallpaperType === 'video') {
+                    backgroundContainer.innerHTML = `<video src="${selectedWallpaper}" autoplay loop muted playsinline class="background-content"></video>`;
+                } else {
+                    backgroundContainer.style.backgroundImage = `url(${selectedWallpaper})`;
+                    backgroundContainer.style.backgroundSize = 'cover';
+                    backgroundContainer.style.backgroundPosition = 'center';
+                }
             } else {
-                backgroundContainer.style.backgroundImage = `url(${selectedWallpaper})`;
+                backgroundContainer.style.backgroundImage = `url('R.jpg')`;
                 backgroundContainer.style.backgroundSize = 'cover';
                 backgroundContainer.style.backgroundPosition = 'center';
             }
-        } else {
-            backgroundContainer.style.backgroundImage = `url('R.jpg')`;
-            backgroundContainer.style.backgroundSize = 'cover';
-            backgroundContainer.style.backgroundPosition = 'center';
         }
 
-        const tabGroup = document.getElementById('tabGroup');
-        const addTabButton = document.getElementById('addTabButton');
-        let tabCounter = 4;
+ 
+        function isURL(str) {
+            try {
+                new URL(str);
+                return true;
+            } catch {
+                return false;
+            }
+        }
+
+        function generateDestinationUrl(input) {
+
+            if (isURL(input)) {
+                if (!input.startsWith('http://') && !input.startsWith('https://')) {
+                    input = 'https://' + input;
+                }
+                return input;
+            }
+            
+            if (input.includes('.') && !input.includes(' ')) {
+                try {
+                    const url = new URL('https://' + input);
+                    return url.toString();
+                } catch {
+                }
+            }
+            
+
+            return `https://duckduckgo.com/?q=${encodeURIComponent(input)}`;
+        }
+
+        function navigateTo(destination) {
+            const url = generateDestinationUrl(destination);
+            currentUrl = url;
+            
+
+            const encoded = __uv$config.encodeUrl(url);
+            const proxyUrl = '/active/go/' + encoded;
+            
+
+            iframeContainer.style.display = 'block';
+            speedDialContainer.style.display = 'none';
+            contentFrame.src = proxyUrl;
+            
+
+            searchInput.value = url;
+            window.location.hash = '#' + url;
+        }
+
+        function showHome() {
+            iframeContainer.style.display = 'none';
+            speedDialContainer.style.display = 'flex';
+            searchInput.value = '';
+            window.location.hash = '';
+            currentUrl = '';
+        }
+
 
         function attachCloseTabListener(closeIcon) {
             closeIcon.addEventListener('click', (event) => {
@@ -457,92 +530,26 @@
             });
         }
 
-        document.querySelectorAll('.close-tab-icon').forEach(attachCloseTabListener);
+        function setupTabs() {
+            document.querySelectorAll('.close-tab-icon').forEach(attachCloseTabListener);
 
-        addTabButton.addEventListener('click', () => {
-            tabCounter++;
-            const newTab = document.createElement('div');
-            newTab.classList.add('tab');
-            newTab.setAttribute('data-tab-id', tabCounter);
-            newTab.innerHTML = `
-                <i class="bi bi-file-earmark"></i>
-                <span>New Tab ${tabCounter - 4}</span>
-                <i class="bi bi-x close-tab-icon"></i>
-            `;
-            tabGroup.insertBefore(newTab, addTabButton);
-            attachCloseTabListener(newTab.querySelector('.close-tab-icon'));
-        });
-
-        function isURL(str) {
-            try {
-                new URL(str);
-                return true;
-            } catch {
-                return false;
-            }
-        }
-
-        function generateSearchUrl(query) {
-            
-            if (isURL(query)) {
-                if (!query.startsWith('http://') && !query.startsWith('https://')) {
-                    return 'https://' + query;
-                }
-                return query;
-            }
-            
-            if (query.includes('.') && !query.includes(' ')) {
-                try {
-                    const url = new URL('https://' + query);
-                    return url.toString();
-                } catch {
-                }
-            }
-            
-
-            return `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
-        }
-
-        function loadUrl(url) {
-            const encoded = __uv$config.encodeUrl(url);
-            const proxyUrl = '/active/go/' + encoded;
-            
-            iframeContainer.style.display = 'block';
-            speedDialContainer.style.display = 'none';
-            contentFrame.src = proxyUrl;
-            
-            searchInput.value = url;
-        }
-
-        function showHome() {
-            iframeContainer.style.display = 'none';
-            speedDialContainer.style.display = 'flex';
-            searchInput.value = '';
-        }
-
-
-        document.addEventListener('DOMContentLoaded', () => {
-
-            if (window.location.hash) {
-                const url = window.location.hash.substring(1);
-                if (url) {
-                    loadUrl(url);
-                }
-            }
-            
-            searchInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    const query = this.value.trim();
-                    if (!query) return;
-
-                    const url = generateSearchUrl(query);
-                    loadUrl(url);
-                    
-
-                    window.location.hash = '#' + url;
-                }
+            addTabButton.addEventListener('click', () => {
+                tabCounter++;
+                const newTab = document.createElement('div');
+                newTab.classList.add('tab');
+                newTab.setAttribute('data-tab-id', tabCounter);
+                newTab.innerHTML = `
+                    <i class="bi bi-file-earmark"></i>
+                    <span>New Tab ${tabCounter - 4}</span>
+                    <i class="bi bi-x close-tab-icon"></i>
+                `;
+                tabGroup.insertBefore(newTab, addTabButton);
+                attachCloseTabListener(newTab.querySelector('.close-tab-icon'));
             });
+        }
 
+
+        function setupNavigationControls() {
             homeButton.addEventListener('click', showHome);
             
             backButton.addEventListener('click', () => {
@@ -562,24 +569,39 @@
                     contentFrame.contentWindow.location.reload();
                 }
             });
-        });
+        }
 
 
-        contentFrame.addEventListener('load', function() {
-            try {
-                const currentUrl = contentFrame.contentWindow.location.href;
-                if (currentUrl.includes('/active/go/')) {
-                    const encoded = currentUrl.split('/active/go/')[1];
-                    const decoded = __uv$config.decodeUrl(encoded);
-                    searchInput.value = decoded;
-                    
-
-                    window.location.hash = '#' + decoded;
+        function setupEventListeners() {
+            setupTabs();
+            setupNavigationControls();
+            
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const query = this.value.trim();
+                    if (!query) return;
+                    navigateTo(query);
                 }
-            } catch (e) {
-                console.log("Couldn't update address bar due to cross-origin restrictions");
-            }
-        });
+            });
+
+
+            contentFrame.addEventListener('load', function() {
+                try {
+                    const frameUrl = contentFrame.contentWindow.location.href;
+                    if (frameUrl.includes('/active/go/')) {
+                        const encoded = frameUrl.split('/active/go/')[1];
+                        const decoded = __uv$config.decodeUrl(encoded);
+                        searchInput.value = decoded;
+                        window.location.hash = '#' + decoded;
+                        currentUrl = decoded;
+                    }
+                } catch (e) {
+                    console.log("Couldn't update address bar due to cross-origin restrictions");
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
