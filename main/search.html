@@ -1,10 +1,13 @@
+<!-- Thanks to been (bbbeen__been) for helping me make it dark mode! -->
+<!--Thanks to MK (mkykg) for adding uv and making this project functional! -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1656502157005715" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1656502157005715"
+     crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Opera Browser</title>
+    <title>Search</title>
     <meta name="google-adsense-account" content="ca-pub-1656502157005715">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
@@ -266,51 +269,6 @@
             background-color: #ff605c;
             color: white;
         }
-
-        .search-suggestions {
-            position: absolute;
-            top: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80%;
-            max-width: 600px;
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            display: none;
-            overflow: hidden;
-        }
-
-        .search-suggestions.active {
-            display: block;
-        }
-
-        .suggestion-item {
-            padding: 12px 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            transition: background-color 0.2s;
-        }
-
-        .suggestion-item:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .suggestion-item i {
-            margin-right: 12px;
-            color: #a0a0a0;
-        }
-
-        .suggestion-text {
-            flex: 1;
-        }
-
-        .suggestion-shortcut {
-            color: #a0a0a0;
-            font-size: 12px;
-        }
     </style>
 </head>
 <body>
@@ -318,7 +276,7 @@
 
     <div class="top-bar-container">
         <div class="tab-group" id="tabGroup">
-            <div class="tab active" data-tab-id="1">
+            <div class="tab" data-tab-id="1">
                 <i class="bi bi-grid-3x3-gap-fill"></i>
                 <span>Speed Dial</span>
                 <i class="bi bi-x close-tab-icon"></i>
@@ -328,6 +286,16 @@
                 <span>Your personal browser</span>
                 <i class="bi bi-x close-tab-icon"></i>
             </div>
+            <div class="tab" data-tab-id="3">
+                <i class="bi bi-stars"></i>
+                <span>Opera Air</span>
+                <i class="bi bi-x close-tab-icon"></i>
+            </div>
+            <div class="tab" data-tab-id="4">
+                <i class="bi bi-grid-3x3-gap"></i>
+                <span>Speed Dial</span>
+                <i class="bi bi-x close-tab-icon"></i>
+            </div>
             <div class="tab add-tab" id="addTabButton">
                 <i class="bi bi-plus-circle"></i>
             </div>
@@ -335,25 +303,17 @@
 
         <div class="search-bar-wrapper">
             <div class="search-bar-nav-icons">
-                <i class="bi bi-arrow-left" id="backButton"></i>
-                <i class="bi bi-arrow-right" id="forwardButton"></i>
-                <i class="bi bi-arrow-clockwise" id="refreshButton"></i>
+                <i class="bi bi-arrow-left"></i>
+                <i class="bi bi-arrow-right"></i>
+                <i class="bi bi-arrow-clockwise"></i>
                 <i class="bi bi-search"></i>
             </div>
-            <input type="text" class="search-bar-input" id="searchInput" placeholder="Search with DuckDuckGo...">
+            <input type="text" class="search-bar-input" id="searchInput" placeholder="Enter search or web address" autofocus>
             <div class="search-bar-right-icons">
                 <i class="bi bi-list"></i>
                 <i class="bi bi-grid-3x3-gap"></i>
                 <i class="bi bi-person"></i>
                 <i class="bi bi-box"></i>
-            </div>
-        </div>
-
-        <div class="search-suggestions" id="searchSuggestions">
-            <div class="suggestion-item" data-search="duckduckgo">
-                <i class="bi bi-search"></i>
-                <div class="suggestion-text">Search DuckDuckGo</div>
-                <div class="suggestion-shortcut">Enter</div>
             </div>
         </div>
 
@@ -365,25 +325,27 @@
     </div>
 
     <div class="opera-sidebar">
-        <div class="nav-icon active" id="homeButton">
+        <div class="nav-icon active">
             <i class="bi bi-house-add-fill"></i>
         </div>
-        <div class="nav-icon" id="gamesButton">
+        <div class="nav-icon">
             <i class="bi bi-controller"></i>
         </div>
-        <div class="nav-icon" id="settingsButton">
+        <div class="nav-icon">
             <i class="bi bi-gear-fill"></i>
         </div>
-        <div class="nav-icon" id="appsButton">
+        <div class="nav-icon">
             <i class="bi bi-google-play"></i>
         </div>
-        <div class="nav-icon" id="bookmarksButton">
+        <div class="nav-icon">
             <i class="bi bi-balloon-heart-fill"></i>
         </div>
     </div>
 
+    <script src="/active/uv/uv.bundle.js"></script>
+    <script src="/active/uv/uv.config.js"></script>
+    <script src="/assets/js/register.js"></script>
     <script>
-
         const backgroundContainer = document.getElementById('backgroundContainer');
         const selectedWallpaper = localStorage.getItem('selectedWallpaper');
         const selectedWallpaperType = localStorage.getItem('selectedWallpaperType');
@@ -402,10 +364,9 @@
             backgroundContainer.style.backgroundPosition = 'center';
         }
 
-
         const tabGroup = document.getElementById('tabGroup');
         const addTabButton = document.getElementById('addTabButton');
-        let tabCounter = 2;
+        let tabCounter = 4;
 
         function attachCloseTabListener(closeIcon) {
             closeIcon.addEventListener('click', (event) => {
@@ -426,66 +387,42 @@
             newTab.setAttribute('data-tab-id', tabCounter);
             newTab.innerHTML = `
                 <i class="bi bi-file-earmark"></i>
-                <span>New Tab ${tabCounter - 2}</span>
+                <span>New Tab ${tabCounter - 4}</span>
                 <i class="bi bi-x close-tab-icon"></i>
             `;
             tabGroup.insertBefore(newTab, addTabButton);
             attachCloseTabListener(newTab.querySelector('.close-tab-icon'));
         });
 
-
-        const searchInput = document.getElementById('searchInput');
-        const searchSuggestions = document.getElementById('searchSuggestions');
-        const backButton = document.getElementById('backButton');
-        const forwardButton = document.getElementById('forwardButton');
-        const refreshButton = document.getElementById('refreshButton');
-
-        searchInput.addEventListener('focus', () => {
-            searchSuggestions.classList.add('active');
-        });
-
-        searchInput.addEventListener('blur', () => {
-            setTimeout(() => {
-                searchSuggestions.classList.remove('active');
-            }, 200);
-        });
-
-        searchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const query = searchInput.value.trim();
-                if (query) {
-                    window.location.href = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
-                }
-                searchSuggestions.classList.remove('active');
+ 
+        function generateSearchUrl(query) {
+            try {
+                const url = new URL(query);
+                return url.toString();
+            } catch {
+                try {
+                    const url = new URL(`https://${query}`);
+                    if (url.hostname.includes('.')) return url.toString();
+                } catch {}
             }
-        });
+            return `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+        }
 
-        document.querySelectorAll('.suggestion-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const query = searchInput.value.trim();
-                if (query) {
-                    window.location.href = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const query = this.value.trim();
+                    if (!query) return;
+
+                    const rawUrl = generateSearchUrl(query);
+                    const encoded = __uv$config.encodeUrl(rawUrl);
+                    const proxyUrl = __uv$config.prefix + encoded;
+                    
+                    window.location.href = proxyUrl;
                 }
-                searchSuggestions.classList.remove('active');
             });
-        });
-
-
-        backButton.addEventListener('click', () => {
-            window.history.back();
-        });
-
-        forwardButton.addEventListener('click', () => {
-            window.history.forward();
-        });
-
-        refreshButton.addEventListener('click', () => {
-            window.location.reload();
-        });
-
-
-        document.getElementById('homeButton').addEventListener('click', () => {
-            window.location.href = window.location.origin;
         });
     </script>
 </body>
