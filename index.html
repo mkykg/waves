@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1656502157005715" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opera Browser</title>
+    <meta name="google-adsense-account" content="ca-pub-1656502157005715">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: none;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+        }
+        .background-content {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: -1;
+            background-color: #000;
+        }
+        .opera-sidebar {
+            position: fixed;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 56px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 24px;
+            box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px 0;
+            gap: 18px;
+            z-index: 2;
+        }
+        .opera-sidebar .nav-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            margin: 0;
+            background: rgba(0, 0, 0, 0.7);
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+        .opera-sidebar .nav-icon:hover, .opera-sidebar .nav-icon.active {
+            background: rgba(0, 0, 0, 0.5);
+        }
+        .opera-sidebar .nav-icon img {
+            width: 22px;
+            height: 22px;
+            filter: none;
+        }
+        .opera-sidebar .nav-icon:last-child {
+            margin-bottom: 0;
+        }
+        .opera-sidebar .nav-icon.dots {
+            margin-top: 8px;
+        }
+        .opera-sidebar .nav-icon svg {
+            width: 22px;
+            height: 22px;
+            display: block;
+        }
+        .operalogocornerleft{
+            position: fixed;
+            left: 16px;
+            top: 16px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .top-bar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px 0 10px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 100;
+            background-image: linear-gradient(to right, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.3) 100%);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .tab-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 2px;
+        }
+
+        .tab {
+            display: flex;
+            align-items: center;
+            height: 32px;
+            padding: 0 10px 0 14px;
+            border-radius: 18px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #d8e0e0;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.15s ease-in-out;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .tab:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .tab i.bi {
+            font-size: 16px;
+            margin-right: 6px;
+            color: #ffffff;
+            transform: translateY(-0.5px);
+        }
+        
+        .tab:nth-child(1) { background-color: rgba(0, 0, 0, 0.7); }
+        .tab:nth-child(2) { background-color: rgba(0, 0, 0, 0.5); }
+        .tab:nth-child(3) { background-color: rgba(0, 0, 0, 0.7); }
+        .tab:nth-child(4) { background-color: rgba(0, 0, 0, 0.5); }
+
+        .tab .close-tab-icon {
+            font-size: 12px;
+            margin-left: 8px;
+            color: #c0c0c0;
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.1s ease, color 0.1s ease;
+        }
+        .tab .close-tab-icon:hover {
+            background-color: rgba(255,255,255,0.3);
+            color: #ffffff;
+        }
+        .tab.add-tab {
+            width: 32px;
+            justify-content: center;
+            padding: 0;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        .tab.add-tab i.bi {
+            margin-right: 0;
+            font-size: 18px;
+            transform: translateY(0);
+        }
+
+        .search-bar-wrapper {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            height: 38px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 19px;
+            margin: 0 10px;
+            padding: 0 10px;
+            box-sizing: border-box;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .search-bar-nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: 12px;
+        }
+
+        .search-bar-nav-icons i.bi, .search-bar-right-icons i.bi {
+            font-size: 16px;
+            color: #c0c0c0;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.1s ease;
+        }
+
+        .search-bar-nav-icons i.bi:hover, .search-bar-right-icons i.bi:hover {
+            color: #ffffff;
+        }
+
+        .search-bar-input {
+            flex-grow: 1;
+            height: 100%;
+            border: none;
+            background: none;
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+            padding: 0;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .search-bar-input::placeholder {
+            color: #a0a0a0;
+            opacity: 0.8;
+        }
+
+        .search-bar-right-icons {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 12px;
+        }
+
+        .window-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-left: 10px;
+        }
+
+        .window-controls i.bi {
+            font-size: 16px;
+            color: #e0e0e0;
+            cursor: pointer;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.1s ease, color 0.1s ease;
+            border-radius: 4px;
+        }
+
+        .window-controls i.bi:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .window-controls .bi-x-lg:hover {
+            background-color: #ff605c;
+            color: white;
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 600px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: none;
+            overflow: hidden;
+        }
+
+        .search-suggestions.active {
+            display: block;
+        }
+
+        .suggestion-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+
+        .suggestion-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .suggestion-item i {
+            margin-right: 12px;
+            color: #a0a0a0;
+        }
+
+        .suggestion-text {
+            flex: 1;
+        }
+
+        .suggestion-shortcut {
+            color: #a0a0a0;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div id="backgroundContainer" class="background-content"></div>
+
+    <div class="top-bar-container">
+        <div class="tab-group" id="tabGroup">
+            <div class="tab active" data-tab-id="1">
+                <i class="bi bi-grid-3x3-gap-fill"></i>
+                <span>Speed Dial</span>
+                <i class="bi bi-x close-tab-icon"></i>
+            </div>
+            <div class="tab" data-tab-id="2">
+                <i class="bi bi-person-circle"></i>
+                <span>Your personal browser</span>
+                <i class="bi bi-x close-tab-icon"></i>
+            </div>
+            <div class="tab add-tab" id="addTabButton">
+                <i class="bi bi-plus-circle"></i>
+            </div>
+        </div>
+
+        <div class="search-bar-wrapper">
+            <div class="search-bar-nav-icons">
+                <i class="bi bi-arrow-left" id="backButton"></i>
+                <i class="bi bi-arrow-right" id="forwardButton"></i>
+                <i class="bi bi-arrow-clockwise" id="refreshButton"></i>
+                <i class="bi bi-search"></i>
+            </div>
+            <input type="text" class="search-bar-input" id="searchInput" placeholder="Search with DuckDuckGo...">
+            <div class="search-bar-right-icons">
+                <i class="bi bi-list"></i>
+                <i class="bi bi-grid-3x3-gap"></i>
+                <i class="bi bi-person"></i>
+                <i class="bi bi-box"></i>
+            </div>
+        </div>
+
+        <div class="search-suggestions" id="searchSuggestions">
+            <div class="suggestion-item" data-search="duckduckgo">
+                <i class="bi bi-search"></i>
+                <div class="suggestion-text">Search DuckDuckGo</div>
+                <div class="suggestion-shortcut">Enter</div>
+            </div>
+        </div>
+
+        <div class="window-controls">
+            <i class="bi bi-dash-lg"></i>
+            <i class="bi bi-square"></i>
+            <i class="bi bi-x-lg"></i>
+        </div>
+    </div>
+
+    <div class="opera-sidebar">
+        <div class="nav-icon active" id="homeButton">
+            <i class="bi bi-house-add-fill"></i>
+        </div>
+        <div class="nav-icon" id="gamesButton">
+            <i class="bi bi-controller"></i>
+        </div>
+        <div class="nav-icon" id="settingsButton">
+            <i class="bi bi-gear-fill"></i>
+        </div>
+        <div class="nav-icon" id="appsButton">
+            <i class="bi bi-google-play"></i>
+        </div>
+        <div class="nav-icon" id="bookmarksButton">
+            <i class="bi bi-balloon-heart-fill"></i>
+        </div>
+    </div>
+
+    <script>
+
+        const backgroundContainer = document.getElementById('backgroundContainer');
+        const selectedWallpaper = localStorage.getItem('selectedWallpaper');
+        const selectedWallpaperType = localStorage.getItem('selectedWallpaperType');
+
+        if (selectedWallpaper && selectedWallpaperType) {
+            if (selectedWallpaperType === 'video') {
+                backgroundContainer.innerHTML = `<video src="${selectedWallpaper}" autoplay loop muted playsinline class="background-content"></video>`;
+            } else {
+                backgroundContainer.style.backgroundImage = `url(${selectedWallpaper})`;
+                backgroundContainer.style.backgroundSize = 'cover';
+                backgroundContainer.style.backgroundPosition = 'center';
+            }
+        } else {
+            backgroundContainer.style.backgroundImage = `url('R.jpg')`;
+            backgroundContainer.style.backgroundSize = 'cover';
+            backgroundContainer.style.backgroundPosition = 'center';
+        }
+
+
+        const tabGroup = document.getElementById('tabGroup');
+        const addTabButton = document.getElementById('addTabButton');
+        let tabCounter = 2;
+
+        function attachCloseTabListener(closeIcon) {
+            closeIcon.addEventListener('click', (event) => {
+                event.stopPropagation();
+                const tabToRemove = closeIcon.closest('.tab');
+                if (tabGroup.children.length > 2) {
+                    tabToRemove.remove();
+                }
+            });
+        }
+
+        document.querySelectorAll('.close-tab-icon').forEach(attachCloseTabListener);
+
+        addTabButton.addEventListener('click', () => {
+            tabCounter++;
+            const newTab = document.createElement('div');
+            newTab.classList.add('tab');
+            newTab.setAttribute('data-tab-id', tabCounter);
+            newTab.innerHTML = `
+                <i class="bi bi-file-earmark"></i>
+                <span>New Tab ${tabCounter - 2}</span>
+                <i class="bi bi-x close-tab-icon"></i>
+            `;
+            tabGroup.insertBefore(newTab, addTabButton);
+            attachCloseTabListener(newTab.querySelector('.close-tab-icon'));
+        });
+
+
+        const searchInput = document.getElementById('searchInput');
+        const searchSuggestions = document.getElementById('searchSuggestions');
+        const backButton = document.getElementById('backButton');
+        const forwardButton = document.getElementById('forwardButton');
+        const refreshButton = document.getElementById('refreshButton');
+
+        searchInput.addEventListener('focus', () => {
+            searchSuggestions.classList.add('active');
+        });
+
+        searchInput.addEventListener('blur', () => {
+            setTimeout(() => {
+                searchSuggestions.classList.remove('active');
+            }, 200);
+        });
+
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const query = searchInput.value.trim();
+                if (query) {
+                    window.location.href = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+                }
+                searchSuggestions.classList.remove('active');
+            }
+        });
+
+        document.querySelectorAll('.suggestion-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const query = searchInput.value.trim();
+                if (query) {
+                    window.location.href = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+                }
+                searchSuggestions.classList.remove('active');
+            });
+        });
+
+
+        backButton.addEventListener('click', () => {
+            window.history.back();
+        });
+
+        forwardButton.addEventListener('click', () => {
+            window.history.forward();
+        });
+
+        refreshButton.addEventListener('click', () => {
+            window.location.reload();
+        });
+
+
+        document.getElementById('homeButton').addEventListener('click', () => {
+            window.location.href = window.location.origin;
+        });
+    </script>
+</body>
+</html>
