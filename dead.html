@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search | Waves</title>
+    <meta property="og:title" content="Search | Waves" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://waves-86a.pages.dev/" />
+    <meta property="og:image" content="https://waves-86a.pages.dev/logo.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="1200" />
+    <meta property="og:description" content="Ride the Waves to internet freedom!" />
+    <meta name="theme-color" content="#0066cc">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:image" content="https://waves-86a.pages.dev/logo.png">
 
     <link rel="icon" href="/logo.png" type="image/png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -265,7 +275,7 @@
             color: white;
         }
         
-   
+
         .waves-overlay {
             position: fixed;
             bottom: 0;
@@ -288,7 +298,7 @@
             }
         }
 
-     
+ 
         .iframe-container {
             position: fixed;
             top: 48px;
@@ -306,7 +316,7 @@
             background-color: white;
         }
 
-     
+
         .speed-dial-container {
             position: fixed;
             top: 48px;
@@ -325,12 +335,12 @@
     <div id="backgroundContainer" class="background-content"></div>
     <div class="waves-overlay"></div>
 
-    
+
     <div class="speed-dial-container" id="speedDialContainer">
-       
+
     </div>
 
-    
+
     <div class="iframe-container" id="iframeContainer">
         <iframe id="contentFrame" name="contentFrame"></iframe>
     </div>
@@ -463,7 +473,7 @@
             attachCloseTabListener(newTab.querySelector('.close-tab-icon'));
         });
 
-    
+
         function generateSearchUrl(query) {
             try {
                 const url = new URL(query);
@@ -485,7 +495,6 @@
             speedDialContainer.style.display = 'none';
             contentFrame.src = proxyUrl;
             
-          
             document.getElementById('searchInput').value = url;
         }
 
@@ -508,7 +517,7 @@
                 }
             });
 
-      
+
             homeButton.addEventListener('click', showHome);
             
             backButton.addEventListener('click', () => {
@@ -530,17 +539,16 @@
             });
         });
 
-      
+
         contentFrame.addEventListener('load', function() {
             try {
-         
+
                 const currentUrl = contentFrame.contentWindow.location.href;
                 if (currentUrl.startsWith(window.location.origin + __uv$config.prefix)) {
                     const decoded = __uv$config.decodeUrl(currentUrl.split(__uv$config.prefix)[1]);
                     document.getElementById('searchInput').value = decoded;
                 }
             } catch (e) {
-
                 console.log("Couldn't update address bar due to cross-origin restrictions");
             }
         });
