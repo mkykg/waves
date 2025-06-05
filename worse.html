@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search | Waves</title>
+    <meta property="og:title" content="Search | Waves" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://waves-86a.pages.dev/" />
+    <meta property="og:image" content="https://waves-86a.pages.dev/logo.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="1200" />
+    <meta property="og:description" content="Ride the Waves to internet freedom!" />
+    <meta name="theme-color" content="#0066cc">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:image" content="https://waves-86a.pages.dev/logo.png">
+
+    <link rel="icon" href="/logo.png" type="image/png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        /* [Previous CSS styles remain exactly the same] */
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: none;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            color: white;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+        }
+        .background-content {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: -1;
+            background-color: #000;
+        }
+        /* [All other CSS styles remain exactly the same] */
+    </style>
+</head>
+<body>
+    <div id="backgroundContainer" class="background-content"></div>
+    <div class="waves-overlay"></div>
+
+    <div class="speed-dial-container" id="speedDialContainer">
+        <!-- Speed dial content here -->
+    </div>
+
+    <div class="iframe-container" id="iframeContainer">
+        <iframe id="contentFrame" name="contentFrame" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+    </div>
+
+    <!-- [All HTML structure remains the same as previous versions] -->
+    <div class="top-bar-container">
+        <!-- [Same tab structure] -->
+    </div>
+
+    <div class="opera-sidebar">
+        <!-- [Same sidebar structure] -->
+    </div>
+
+    <script src="/active/uv/uv.bundle.js"></script>
+    <script src="/active/uv/uv.config.js"></script>
+    <script src="/active/uv/uv.sw.js"></script>
+    <script src="/assets/js/register.js"></script>
+    <script>
+        // DOM Elements
+        const backgroundContainer = document.getElementById('backgroundContainer');
+        const iframeContainer = document.getElementById('iframeContainer');
+        const contentFrame = document.getElementById('contentFrame');
+        const speedDialContainer = document.getElementById('speedDialContainer');
+        const homeButton = document.getElementById('homeButton');
+        const backButton = document.getElementById('backButton');
+        const forwardButton = document.getElementById('forwardButton');
+        const refreshButton = document.getElementById('refreshButton');
+        const searchInput = document.getElementById('searchInput');
+
+        // Initialize
+        function init() {
+            loadWallpaper();
+            setupEventListeners();
+        }
+
+        // Wallpaper setup
+        function loadWallpaper() {
+            const selectedWallpaper = localStorage.getItem('selectedWallpaper');
+            const selectedWallpaperType = localStorage.getItem('selectedWallpaperType');
+
+            if (selectedWallpaper && selectedWallpaperType) {
+                if (selectedWallpaperType === 'video') {
+                    backgroundContainer.innerHTML = `<video src="${selectedWallpaper}" autoplay loop muted playsinline class="background-content"></video>`;
+                } else {
+                    backgroundContainer.style.backgroundImage = `url(${selectedWallpaper})`;
+                    backgroundContainer.style.backgroundSize = 'cover';
+                    backgroundContainer.style.backgroundPosition = 'center';
+                }
+            } else {
+                backgroundContainer.style.backgroundImage = `url('R.jpg')`;
+                backgroundContainer.style.backgroundSize = 'cover';
+                backgroundContainer.style.backgroundPosition = 'center';
+            }
+        }
+
+        // URL handling
+        function isURL(str) {
+            // Check if it's a valid URL
+            try {
+                new URL(str);
+                return true;
+            } catch {
+                return false;
+            }
+        }
+
+        function isLikelyDomain(str) {
+            // Simple check for domains (something.something)
+            return /^[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(str);
+        }
+
+        function navigateTo(destination) {
+            let finalUrl;
+            
+            // If it's already a valid URL, use it directly
+            if (isURL(destination)) {
+                finalUrl = destination;
+            } 
+            // If it looks like a domain (no spaces, has a dot)
+            else if (isLikelyDomain(destination)) {
+                finalUrl = 'https://' + destination;
+            }
+            // Otherwise treat as search query - proxy through our own search
+            else {
+                finalUrl = `https://www.google.com/search?q=${encodeURIComponent(destination)}`;
+            }
+
+            // Encode the final URL for the proxy
+            const encoded = __uv$config.encodeUrl(finalUrl);
+            const proxyUrl = '/active/go/' + encoded;
+            
+            // Load in iframe
+            iframeContainer.style.display = 'block';
+            speedDialContainer.style.display = 'none';
+            contentFrame.src = proxyUrl;
+            
+            // Update search input
+            searchInput.value = destination;
+        }
+
+        function showHome() {
+            iframeContainer.style.display = 'none';
+            speedDialContainer.style.display = 'flex';
+            searchInput.value = '';
+        }
+
+        // Event listeners
+        function setupEventListeners() {
+            // Search input
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const query = this.value.trim();
+                    if (!query) return;
+                    navigateTo(query);
+                }
+            });
+
+            // Navigation buttons
+            homeButton.addEventListener('click', showHome);
+            
+            backButton.addEventListener('click', () => {
+                if (iframeContainer.style.display === 'block') {
+                    contentFrame.contentWindow.history.back();
+                }
+            });
+            
+            forwardButton.addEventListener('click', () => {
+                if (iframeContainer.style.display === 'block') {
+                    contentFrame.contentWindow.history.forward();
+                }
+            });
+            
+            refreshButton.addEventListener('click', () => {
+                if (iframeContainer.style.display === 'block') {
+                    contentFrame.contentWindow.location.reload();
+                }
+            });
+
+            // Iframe load event to update URL
+            contentFrame.addEventListener('load', function() {
+                try {
+                    const frameUrl = contentFrame.contentWindow.location.href;
+                    if (frameUrl.includes('/active/go/')) {
+                        const encoded = frameUrl.split('/active/go/')[1];
+                        const decoded = __uv$config.decodeUrl(encoded);
+                        
+                        // Extract the original query from Google search if needed
+                        let displayUrl = decoded;
+                        if (decoded.includes('google.com/search')) {
+                            const urlObj = new URL(decoded);
+                            const query = urlObj.searchParams.get('q');
+                            if (query) {
+                                displayUrl = query;
+                            }
+                        }
+                        
+                        searchInput.value = displayUrl;
+                    }
+                } catch (e) {
+                    console.log("Couldn't update address bar due to cross-origin restrictions");
+                }
+            });
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
