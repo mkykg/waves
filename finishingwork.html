@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search | Waves</title>
+    <meta property="og:title" content="Search | Waves" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://waves-86a.pages.dev/" />
+    <meta property="og:image" content="https://waves-86a.pages.dev/logo.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="1200" />
+    <meta property="og:description" content="Ride the Waves to internet freedom!" />
+    <meta name="theme-color" content="#0066cc">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:image" content="https://waves-86a.pages.dev/logo.png">
+
+    <link rel="icon" href="/logo.png" type="image/png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: none;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            color: white;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+        }
+        .background-content {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: -1;
+            background-color: #000;
+        }
+        .opera-sidebar {
+            position: fixed;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 56px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 24px;
+            box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px 0;
+            gap: 18px;
+            z-index: 2;
+        }
+        .opera-sidebar .nav-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            margin: 0;
+            background: rgba(0, 0, 0, 0.7);
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+        .opera-sidebar .nav-icon:hover, .opera-sidebar .nav-icon.active {
+            background: rgba(0, 0, 0, 0.5);
+        }
+        .opera-sidebar .nav-icon img {
+            width: 22px;
+            height: 22px;
+            filter: none;
+        }
+        .opera-sidebar .nav-icon:last-child {
+            margin-bottom: 0;
+        }
+        .opera-sidebar .nav-icon.dots {
+            margin-top: 8px;
+        }
+        .opera-sidebar .nav-icon svg {
+            width: 22px;
+            height: 22px;
+            display: block;
+        }
+        .operalogocornerleft{
+            position: fixed;
+            left: 16px;
+            top: 16px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .top-bar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px 0 10px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 100;
+            background-image: linear-gradient(to right, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.3) 100%);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .tab-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 2px;
+        }
+
+        .tab {
+            display: flex;
+            align-items: center;
+            height: 32px;
+            padding: 0 10px 0 14px;
+            border-radius: 18px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #d8e0e0;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.15s ease-in-out;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .tab:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .tab.active {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .tab i.bi {
+            font-size: 16px;
+            margin-right: 6px;
+            color: #ffffff;
+            transform: translateY(-0.5px);
+        }
+        
+        .tab .close-tab-icon {
+            font-size: 12px;
+            margin-left: 8px;
+            color: #c0c0c0;
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.1s ease, color 0.1s ease;
+        }
+        .tab .close-tab-icon:hover {
+            background-color: rgba(255,255,255,0.3);
+            color: #ffffff;
+        }
+        .tab.add-tab {
+            width: 32px;
+            justify-content: center;
+            padding: 0;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        .tab.add-tab i.bi {
+            margin-right: 0;
+            font-size: 18px;
+            transform: translateY(0);
+        }
+
+        .search-bar-wrapper {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            height: 38px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 19px;
+            margin: 0 10px;
+            padding: 0 10px;
+            box-sizing: border-box;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .search-bar-nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: 12px;
+        }
+
+        .search-bar-nav-icons i.bi, .search-bar-right-icons i.bi {
+            font-size: 16px;
+            color: #c0c0c0;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.1s ease;
+        }
+
+        .search-bar-nav-icons i.bi:hover, .search-bar-right-icons i.bi:hover {
+            color: #ffffff;
+        }
+
+        .search-bar-input {
+            flex-grow: 1;
+            height: 100%;
+            border: none;
+            background: none;
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+            padding: 0;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .search-bar-input::placeholder {
+            color: #a0a0a0;
+            opacity: 0.8;
+        }
+
+        .search-bar-right-icons {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 12px;
+        }
+
+        .window-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-left: 10px;
+        }
+
+        .window-controls i.bi {
+            font-size: 16px;
+            color: #e0e0e0;
+            cursor: pointer;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.1s ease, color 0.1s ease;
+            border-radius: 4px;
+        }
+
+        .window-controls i.bi:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .window-controls .bi-x-lg:hover {
+            background-color: #ff605c;
+            color: white;
+        }
+        
+        .waves-overlay {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="%230066cc"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="%230066cc"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%230066cc"/></svg>');
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: -8;
+            animation: waveAnimation 10s linear infinite;
+        }
+
+        @keyframes waveAnimation {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .iframe-container {
+            position: fixed;
+            top: 48px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 48px);
+            z-index: 1;
+            display: none;
+        }
+
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background-color: white;
+        }
+
+        .home-content {
+            position: fixed;
+            top: 48px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 48px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 0;
+        }
+
+        .loading-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            display: none;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="backgroundContainer" class="background-content"></div>
+    <div class="waves-overlay"></div>
+
+    <div class="home-content" id="homeContent">
+        <h1>Welcome to Waves</h1>
+        <p>Enter a search or URL above to begin</p>
+    </div>
+
+    <div class="iframe-container" id="iframeContainer">
+        <iframe id="contentFrame" name="contentFrame" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+    </div>
+
+    <div class="top-bar-container">
+        <div class="tab-group" id="tabGroup">
+            <div class="tab active" data-tab-id="speed-dial" data-type="speed-dial">
+                <i class="bi bi-grid-3x3-gap-fill"></i>
+                <span>Speed Dial</span>
+                <i class="bi bi-x close-tab-icon"></i>
+            </div>
+            <div class="tab add-tab" id="addTabButton">
+                <i class="bi bi-plus-circle"></i>
+            </div>
+        </div>
+
+        <div class="search-bar-wrapper">
+            <div class="search-bar-nav-icons">
+                <i class="bi bi-arrow-left" id="backButton"></i>
+                <i class="bi bi-arrow-right" id="forwardButton"></i>
+                <i class="bi bi-arrow-clockwise" id="refreshButton"></i>
+                <i class="bi bi-search"></i>
+            </div>
+            <input type="text" class="search-bar-input" id="searchInput" placeholder="Enter search or web address" autofocus>
+            <div class="search-bar-right-icons">
+                <i class="bi bi-list"></i>
+                <i class="bi bi-grid-3x3-gap"></i>
+                <i class="bi bi-person"></i>
+                <i class="bi bi-box"></i>
+            </div>
+        </div>
+
+        <div class="window-controls">
+            <i class="bi bi-dash-lg"></i>
+            <i class="bi bi-square"></i>
+            <i class="bi bi-x-lg"></i>
+        </div>
+    </div>
+
+    <div class="opera-sidebar">
+        <div class="nav-icon active" id="homeButton">
+            <i class="bi bi-house-add-fill"></i>
+        </div>
+        <div class="nav-icon">
+            <i class="bi bi-controller"></i>
+        </div>
+        <div class="nav-icon">
+            <i class="bi bi-gear-fill"></i>
+        </div>
+        <div class="nav-icon">
+            <i class="bi bi-google-play"></i>
+        </div>
+        <div class="nav-icon">
+            <i class="bi bi-balloon-heart-fill"></i>
+        </div>
+    </div>
+
+    <div class="loading-indicator" id="loadingIndicator">
+        <i class="bi bi-arrow-repeat" style="font-size: 24px; animation: spin 1s linear infinite;"></i>
+        <p>Loading...</p>
+    </div>
+
+    <script src="/active/uv/uv.bundle.js"></script>
+    <script src="/active/uv/uv.config.js"></script>
+    <script src="/active/uv/uv.sw.js"></script>
+    <script src="/assets/js/register.js"></script>
+    <script>
+        const backgroundContainer = document.getElementById('backgroundContainer');
+        const contentFrame = document.getElementById('contentFrame');
+        const iframeContainer = document.getElementById('iframeContainer');
+        const homeContent = document.getElementById('homeContent');
+        const searchInput = document.getElementById('searchInput');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const homeButton = document.getElementById('homeButton');
+        const backButton = document.getElementById('backButton');
+        const forwardButton = document.getElementById('forwardButton');
+        const refreshButton = document.getElementById('refreshButton');
+        const tabGroup = document.getElementById('tabGroup');
+        const addTabButton = document.getElementById('addTabButton');
+
+        const selectedWallpaper = localStorage.getItem('selectedWallpaper');
+        const selectedWallpaperType = localStorage.getItem('selectedWallpaperType');
+
+        if (selectedWallpaper && selectedWallpaperType) {
+            if (selectedWallpaperType === 'video') {
+                backgroundContainer.innerHTML = `<video src="${selectedWallpaper}" autoplay loop muted playsinline class="background-content"></video>`;
+            } else {
+                backgroundContainer.style.backgroundImage = `url(${selectedWallpaper})`;
+                backgroundContainer.style.backgroundSize = 'cover';
+                backgroundContainer.style.backgroundPosition = 'center';
+            }
+        } else {
+            backgroundContainer.style.backgroundImage = `url('R.jpg')`;
+            backgroundContainer.style.backgroundSize = 'cover';
+            backgroundContainer.style.backgroundPosition = 'center';
+        }
+
+        let tabCounter = 1;
+        let activeTabId = 'speed-dial';
+
+        const tabStates = {
+            'speed-dial': { url: null, searchInput: '', type: 'speed-dial' }
+        };
+
+        function generateSearchUrl(query) {
+            try {
+                const url = new URL(query);
+                return url.toString();
+            } catch {
+                try {
+                    const url = new URL(`https://${query}`);
+                    if (url.hostname.includes('.')) return url.toString();
+                } catch {}
+            }
+            
+            return `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+        }
+
+        function getProxyUrl(url) {
+            const encoded = __uv$config.encodeUrl(url);
+            return `/active/go/${encoded}`;
+        }
+
+        function navigateToUrl(url) {
+            if (!url) return;
+            
+            loadingIndicator.style.display = 'block';
+            
+            const destinationUrl = generateSearchUrl(url);
+            const proxyUrl = getProxyUrl(destinationUrl);
+            
+            iframeContainer.style.display = 'block';
+            homeContent.style.display = 'none';
+            contentFrame.src = proxyUrl;
+            
+            if (activeTabId && tabStates[activeTabId]) {
+                tabStates[activeTabId].url = destinationUrl;
+                tabStates[activeTabId].searchInput = url;
+            }
+            
+            searchInput.value = url;
+            
+            contentFrame.onload = () => {
+                loadingIndicator.style.display = 'none';
+            };
+            
+            contentFrame.onerror = () => {
+                loadingIndicator.style.display = 'none';
+                alert('Failed to load the page');
+            };
+        }
+
+        function showHome() {
+            iframeContainer.style.display = 'none';
+            homeContent.style.display = 'flex';
+            searchInput.value = '';
+            if (activeTabId && tabStates[activeTabId]) {
+                tabStates[activeTabId].searchInput = '';
+                tabStates[activeTabId].url = null;
+            }
+        }
+
+        function setActiveTab(tabElement, tabId) {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            tabElement.classList.add('active');
+            activeTabId = tabId;
+
+            if (tabStates[activeTabId]) {
+                searchInput.value = tabStates[activeTabId].searchInput || '';
+                if (tabStates[activeTabId].url) {
+                    navigateToUrl(tabStates[activeTabId].url);
+                } else if (tabStates[activeTabId].type === 'speed-dial') {
+                    showHome();
+                } else {
+                    iframeContainer.style.display = 'none';
+                    homeContent.style.display = 'flex';
+                }
+            }
+        }
+
+        function attachTabListeners(tabElement, tabId) {
+            tabElement.addEventListener('click', (event) => {
+                if (!event.target.classList.contains('close-tab-icon')) {
+                    setActiveTab(tabElement, tabId);
+                }
+            });
+
+            const closeIcon = tabElement.querySelector('.close-tab-icon');
+            if (closeIcon) {
+                closeIcon.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    const tabToRemove = closeIcon.closest('.tab');
+                    const idToRemove = tabToRemove.dataset.tabId;
+
+                    if (tabGroup.querySelectorAll('.tab').length > 2) {
+                        if (idToRemove === activeTabId) {
+                            showHome();
+                        }
+                        delete tabStates[idToRemove];
+                        tabToRemove.remove();
+                    }
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const initialSpeedDialTab = document.querySelector('.tab[data-tab-id="speed-dial"]');
+            attachTabListeners(initialSpeedDialTab, 'speed-dial');
+
+            addTabButton.addEventListener('click', () => {
+                tabCounter++;
+                const newTabId = `tab-${tabCounter}`;
+                const newTab = document.createElement('div');
+                newTab.classList.add('tab');
+                newTab.setAttribute('data-tab-id', newTabId);
+                newTab.setAttribute('data-type', 'new-tab');
+                newTab.innerHTML = `
+                    <i class="bi bi-file-earmark"></i>
+                    <span>New Tab</span>
+                    <i class="bi bi-x close-tab-icon"></i>
+                `;
+                tabGroup.insertBefore(newTab, addTabButton);
+                attachTabListeners(newTab, newTabId);
+
+                tabStates[newTabId] = { url: null, searchInput: '', type: 'new-tab' };
+
+                setActiveTab(newTab, newTabId);
+            });
+
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const query = this.value.trim();
+                    if (!query) return;
+
+                    navigateToUrl(query);
+                }
+            });
+
+            homeButton.addEventListener('click', showHome);
+            
+            backButton.addEventListener('click', () => {
+                if (iframeContainer.style.display === 'block' && contentFrame.contentWindow) {
+                    try {
+                        contentFrame.contentWindow.history.back();
+                    } catch (e) {
+                        console.log('Navigation blocked by CORS');
+                    }
+                }
+            });
+            
+            forwardButton.addEventListener('click', () => {
+                if (iframeContainer.style.display === 'block' && contentFrame.contentWindow) {
+                    try {
+                        contentFrame.contentWindow.history.forward();
+                    } catch (e) {
+                        console.log('Navigation blocked by CORS');
+                    }
+                }
+            });
+            
+            refreshButton.addEventListener('click', () => {
+                if (iframeContainer.style.display === 'block' && contentFrame.contentWindow) {
+                    contentFrame.src = contentFrame.src;
+                    loadingIndicator.style.display = 'block';
+                    
+                    contentFrame.onload = () => {
+                        loadingIndicator.style.display = 'none';
+                    };
+                }
+            });
+
+            window.addEventListener('load', () => {
+                const path = window.location.pathname;
+                if (path.startsWith('/active/go/')) {
+                    iframeContainer.style.display = 'block';
+                    homeContent.style.display = 'none';
+                    contentFrame.src = window.location.pathname + window.location.search;
+                    searchInput.value = window.location.href;
+                }
+            });
+        });
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
