@@ -1,16 +1,23 @@
 <!-- Thanks to been (bbbeen__been) for helping me make it dark mode! -->
 <!--Thanks to MK (mkykg) for adding uv and making this project functional! -->
 
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1656502157005715"
-     crossorigin="anonymous"></script>
+<html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search for waves | Powered by Evadion</title>
+    <title>Search | Waves</title>
+    <meta property="og:title" content="Search | Waves">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://waves-86a.pages.dev/">
+    <meta property="og:image" content="https://waves-86a.pages.dev/logo.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="1200">
+    <meta property="og:description" content="Ride the Waves to internet freedom!">
     <meta name="google-adsense-account" content="ca-pub-1656502157005715">
+    <meta name="theme-color" content="#0066cc">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:image" content="https://waves-86a.pages.dev/logo.png">
+<script src="https://pagead2.googlesyndication.com/pagead/managed/js/adsense/m202506050101/show_ads_impl_fy2021.js?bust=31092882"></script><script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1656502157005715" crossorigin="anonymous" data-checked-head="true"></script>
+    <link rel="icon" href="/logo.png" type="image/png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         body {
@@ -20,8 +27,6 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
             color: white;
             font-family: 'Segoe UI', Arial, sans-serif;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
@@ -140,6 +145,10 @@
             background-color: rgba(0, 0, 0, 0.5);
         }
 
+        .tab.active {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
         .tab i.bi {
             font-size: 16px;
             margin-right: 6px;
@@ -147,11 +156,6 @@
             transform: translateY(-0.5px);
         }
         
-        .tab:nth-child(1) { background-color: rgba(0, 0, 0, 0.7); }
-        .tab:nth-child(2) { background-color: rgba(0, 0, 0, 0.5); }
-        .tab:nth-child(3) { background-color: rgba(0, 0, 0, 0.7); }
-        .tab:nth-child(4) { background-color: rgba(0, 0, 0, 0.5); }
-
         .tab .close-tab-icon {
             font-size: 12px;
             margin-left: 8px;
@@ -271,30 +275,80 @@
             background-color: #ff605c;
             color: white;
         }
+        
+
+        .waves-overlay {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="%230066cc"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="%230066cc"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%230066cc"/></svg>');
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: -8;
+            animation: waveAnimation 10s linear infinite;
+        }
+
+        @keyframes waveAnimation {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .iframe-container {
+            position: fixed;
+            top: 48px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 48px);
+            z-index: 1;
+            display: none;
+        }
+
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background-color: white;
+        }
+
+
+        .speed-dial-container {
+            position: fixed;
+            top: 48px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 48px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
     </style>
-</head>
+<meta http-equiv="origin-trial" content="AlK2UR5SkAlj8jjdEc9p3F3xuFYlF6LYjAML3EOqw1g26eCwWPjdmecULvBH5MVPoqKYrOfPhYVL71xAXI1IBQoAAAB8eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3NTgwNjcxOTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="Amm8/NmvvQfhwCib6I7ZsmUxiSCfOxWxHayJwyU1r3gRIItzr7bNQid6O8ZYaE1GSQTa69WwhPC9flq/oYkRBwsAAACCeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiV2ViVmlld1hSZXF1ZXN0ZWRXaXRoRGVwcmVjYXRpb24iLCJleHBpcnkiOjE3NTgwNjcxOTksImlzU3ViZG9tYWluIjp0cnVlfQ=="><meta http-equiv="origin-trial" content="A9wSqI5i0iwGdf6L1CERNdmsTPgVu44ewj8QxTBYgsv1LCPUVF7YmWOvTappqB1139jAymxUW/RO8zmMqo4zlAAAAACNeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiRmxlZGdlQmlkZGluZ0FuZEF1Y3Rpb25TZXJ2ZXIiLCJleHBpcnkiOjE3MzY4MTI4MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A+d7vJfYtay4OUbdtRPZA3y7bKQLsxaMEPmxgfhBGqKXNrdkCQeJlUwqa6EBbSfjwFtJWTrWIioXeMW+y8bWAgQAAACTeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiRmxlZGdlQmlkZGluZ0FuZEF1Y3Rpb25TZXJ2ZXIiLCJleHBpcnkiOjE3MzY4MTI4MDAsImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"></head>
 <body>
-    <div id="backgroundContainer" class="background-content"></div>
+    <div id="backgroundContainer" class="background-content" style="background-image: url(&quot;https://cdn-production-opera-website.operacdn.com/staticfiles/assets/images/main/air/air-video-cover.d120adce53dc.jpg&quot;); background-size: cover; background-position: center center;"></div>
+    <div class="waves-overlay"></div>
+
+
+    <div class="speed-dial-container" id="speedDialContainer" style="display: flex;">
+
+    </div>
+
+
+    <div class="iframe-container" id="iframeContainer" style="display: none;">
+        <iframe id="contentFrame" name="contentFrame"></iframe>
+    </div>
 
     <div class="top-bar-container">
         <div class="tab-group" id="tabGroup">
-            <div class="tab" data-tab-id="1">
+            <div class="tab active" data-tab-id="speed-dial" data-type="speed-dial">
                 <i class="bi bi-grid-3x3-gap-fill"></i>
-                <span>Speed Dial</span>
-                <i class="bi bi-x close-tab-icon"></i>
-            </div>
-            <div class="tab" data-tab-id="2">
-                <i class="bi bi-person-circle"></i>
-                <span>Your personal browser</span>
-                <i class="bi bi-x close-tab-icon"></i>
-            </div>
-            <div class="tab" data-tab-id="3">
-                <i class="bi bi-stars"></i>
-                <span>Opera Air</span>
-                <i class="bi bi-x close-tab-icon"></i>
-            </div>
-            <div class="tab" data-tab-id="4">
-                <i class="bi bi-grid-3x3-gap"></i>
                 <span>Speed Dial</span>
                 <i class="bi bi-x close-tab-icon"></i>
             </div>
@@ -305,12 +359,12 @@
 
         <div class="search-bar-wrapper">
             <div class="search-bar-nav-icons">
-                <i class="bi bi-arrow-left"></i>
-                <i class="bi bi-arrow-right"></i>
-                <i class="bi bi-arrow-clockwise"></i>
+                <i class="bi bi-arrow-left" id="backButton"></i>
+                <i class="bi bi-arrow-right" id="forwardButton"></i>
+                <i class="bi bi-arrow-clockwise" id="refreshButton"></i>
                 <i class="bi bi-search"></i>
             </div>
-            <input type="text" class="search-bar-input" id="searchInput" placeholder="Enter search or web address" autofocus>
+            <input type="text" class="search-bar-input" id="searchInput" placeholder="Enter search or web address" autofocus="">
             <div class="search-bar-right-icons">
                 <i class="bi bi-list"></i>
                 <i class="bi bi-grid-3x3-gap"></i>
@@ -327,7 +381,7 @@
     </div>
 
     <div class="opera-sidebar">
-        <div class="nav-icon active">
+        <div class="nav-icon active" id="homeButton">
             <i class="bi bi-house-add-fill"></i>
         </div>
         <div class="nav-icon">
@@ -344,15 +398,31 @@
         </div>
     </div>
 
-    <script src="/active/uv/uv.bundle.js"></script>
+    <script src="/active/uv/uv.bundle.js"></script><ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: none !important;" data-ad-status="unfilled"><div id="aswift_0_host" style="border: none; height: 0px; width: 0px; margin: 0px; padding: 0px; position: relative; visibility: visible; background-color: transparent; display: inline-block;"><iframe id="aswift_0" name="aswift_0" browsingtopics="true" style="left:0;position:absolute;top:0;border:0;width:undefinedpx;height:undefinedpx;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allow="attribution-reporting; run-ad-auction" src="https://googleads.g.doubleclick.net/pagead/ads?client=ca-pub-1656502157005715&amp;output=html&amp;adk=1812271804&amp;adf=3025194257&amp;abgtt=6&amp;lmt=1749165491&amp;plat=1%3A16778240%2C2%3A16778240%2C3%3A2097152%2C4%3A2097152%2C9%3A32776%2C16%3A8388608%2C17%3A32%2C24%3A32%2C25%3A32%2C30%3A1081344%2C32%3A32%2C41%3A32%2C42%3A32&amp;format=0x0&amp;url=https%3A%2F%2Fwww.opensourcedtech.com%2Fsearch.html&amp;pra=5&amp;wgl=1&amp;aihb=0&amp;asro=0&amp;aifxl=29_18~30_19&amp;aiapm=0.03156443739542171&amp;aiapmi=0.16&amp;aiact=0.6091549549945591&amp;aicct=0.7&amp;ailct=0.5550815628130766&amp;aimart=8&amp;uach=WyJXaW5kb3dzIiwiMTkuMC4wIiwieDg2IiwiIiwiMTM2LjAuMzI0MC45MiIsbnVsbCwwLG51bGwsIjY0IixbWyJDaHJvbWl1bSIsIjEzNi4wLjcxMDMuMTEzIl0sWyJNaWNyb3NvZnQgRWRnZSIsIjEzNi4wLjMyNDAuOTIiXSxbIk5vdC5BL0JyYW5kIiwiOTkuMC4wLjAiXV0sMF0.&amp;dt=1749222177764&amp;bpp=1&amp;bdt=25&amp;idt=7&amp;shv=r20250605&amp;mjsv=m202506050101&amp;ptt=9&amp;saldr=aa&amp;abxe=1&amp;cookie_enabled=1&amp;eoidce=1&amp;nras=1&amp;correlator=5355126567532&amp;frm=20&amp;pv=2&amp;u_tz=-300&amp;u_his=4&amp;u_h=720&amp;u_w=1280&amp;u_ah=672&amp;u_aw=1280&amp;u_cd=24&amp;u_sd=1.5&amp;dmc=8&amp;adx=-12245933&amp;ady=-12245933&amp;biw=1272&amp;bih=594&amp;scr_x=0&amp;scr_y=0&amp;eid=42531705%2C95353387%2C31092882%2C95362800%2C95362808%2C95363069&amp;oid=2&amp;pvsid=5402729037685627&amp;tmod=92518449&amp;uas=0&amp;nvt=1&amp;fsapi=1&amp;ref=https%3A%2F%2Fwww.opensourcedtech.com%2Fwallpaper.html&amp;fc=1920&amp;brdim=0%2C0%2C0%2C0%2C1280%2C0%2C1280%2C672%2C1272%2C594&amp;vis=1&amp;rsz=%7C%7Cs%7C&amp;abl=NS&amp;fu=32768&amp;bc=31&amp;bz=1.01&amp;td=1&amp;tdf=2&amp;psd=W251bGwsbnVsbCxudWxsLDNd&amp;nt=1&amp;ifi=1&amp;uci=a!1&amp;fsb=1&amp;dtd=17" data-google-container-id="a!1" tabindex="0" title="Advertisement" aria-label="Advertisement" data-load-complete="true"></iframe></div></ins>
     <script src="/active/uv/uv.config.js"></script>
     <script src="/active/uv/uv.sw.js"></script>
-    <script src="/assets/js/index.js"></script>
     <script src="/assets/js/register.js"></script>
     <script>
         const backgroundContainer = document.getElementById('backgroundContainer');
         const selectedWallpaper = localStorage.getItem('selectedWallpaper');
         const selectedWallpaperType = localStorage.getItem('selectedWallpaperType');
+        const iframeContainer = document.getElementById('iframeContainer');
+        const contentFrame = document.getElementById('contentFrame');
+        const speedDialContainer = document.getElementById('speedDialContainer');
+        const homeButton = document.getElementById('homeButton');
+        const backButton = document.getElementById('backButton');
+        const forwardButton = document.getElementById('forwardButton');
+        const refreshButton = document.getElementById('refreshButton');
+        const searchInput = document.getElementById('searchInput');
+        const tabGroup = document.getElementById('tabGroup');
+        const addTabButton = document.getElementById('addTabButton');
+
+        let tabCounter = 1;
+        let activeTabId = 'speed-dial';
+
+        const tabStates = {
+            'speed-dial': { url: null, searchInput: '', type: 'speed-dial' }
+        };
 
         if (selectedWallpaper && selectedWallpaperType) {
             if (selectedWallpaperType === 'video') {
@@ -368,37 +438,6 @@
             backgroundContainer.style.backgroundPosition = 'center';
         }
 
-        const tabGroup = document.getElementById('tabGroup');
-        const addTabButton = document.getElementById('addTabButton');
-        let tabCounter = 4;
-
-        function attachCloseTabListener(closeIcon) {
-            closeIcon.addEventListener('click', (event) => {
-                event.stopPropagation();
-                const tabToRemove = closeIcon.closest('.tab');
-                if (tabGroup.children.length > 2) {
-                    tabToRemove.remove();
-                }
-            });
-        }
-
-        document.querySelectorAll('.close-tab-icon').forEach(attachCloseTabListener);
-
-        addTabButton.addEventListener('click', () => {
-            tabCounter++;
-            const newTab = document.createElement('div');
-            newTab.classList.add('tab');
-            newTab.setAttribute('data-tab-id', tabCounter);
-            newTab.innerHTML = `
-                <i class="bi bi-file-earmark"></i>
-                <span>New Tab ${tabCounter - 4}</span>
-                <i class="bi bi-x close-tab-icon"></i>
-            `;
-            tabGroup.insertBefore(newTab, addTabButton);
-            attachCloseTabListener(newTab.querySelector('.close-tab-icon'));
-        });
-
-        // Search functionality from Evadion
         function generateSearchUrl(query) {
             try {
                 const url = new URL(query);
@@ -412,22 +451,173 @@
             return `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const searchInput = document.getElementById('searchInput');
+        function loadUrl(url) {
+            if (!url) {
+                showHome();
+                return;
+            }
+            const encoded = __uv$config.encodeUrl(url);
+            const proxyUrl = __uv$config.prefix + encoded;
             
+            iframeContainer.style.display = 'block';
+            speedDialContainer.style.display = 'none';
+            contentFrame.src = proxyUrl;
+            
+            if (activeTabId && tabStates[activeTabId]) {
+                tabStates[activeTabId].searchInput = url;
+            }
+            searchInput.value = url;
+        }
+
+        function showHome() {
+            iframeContainer.style.display = 'none';
+            speedDialContainer.style.display = 'flex';
+            searchInput.value = '';
+            if (activeTabId && tabStates[activeTabId]) {
+                tabStates[activeTabId].searchInput = '';
+            }
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector('.tab[data-tab-id="speed-dial"]').classList.add('active');
+            activeTabId = 'speed-dial';
+        }
+
+        function setActiveTab(tabElement, tabId) {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            tabElement.classList.add('active');
+            activeTabId = tabId;
+
+            if (tabStates[activeTabId]) {
+                searchInput.value = tabStates[activeTabId].searchInput || '';
+                if (tabStates[activeTabId].url) {
+                    loadUrl(tabStates[activeTabId].url);
+                } else if (tabStates[activeTabId].type === 'speed-dial') {
+                    showHome();
+                } else {
+                    iframeContainer.style.display = 'none';
+                    speedDialContainer.style.display = 'flex';
+                }
+            }
+        }
+
+        function attachTabListeners(tabElement, tabId) {
+            tabElement.addEventListener('click', (event) => {
+                if (!event.target.classList.contains('close-tab-icon')) {
+                    setActiveTab(tabElement, tabId);
+                }
+            });
+
+            const closeIcon = tabElement.querySelector('.close-tab-icon');
+            if (closeIcon) {
+                closeIcon.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    const tabToRemove = closeIcon.closest('.tab');
+                    const idToRemove = tabToRemove.dataset.tabId;
+
+                    if (tabGroup.querySelectorAll('.tab').length > 2) {
+                        if (idToRemove === activeTabId) {
+                            showHome();
+                        }
+                        delete tabStates[idToRemove];
+                        tabToRemove.remove();
+                    }
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const initialSpeedDialTab = document.querySelector('.tab[data-tab-id="speed-dial"]');
+            attachTabListeners(initialSpeedDialTab, 'speed-dial');
+
+            addTabButton.addEventListener('click', () => {
+                tabCounter++;
+                const newTabId = `tab-${tabCounter}`;
+                const newTab = document.createElement('div');
+                newTab.classList.add('tab');
+                newTab.setAttribute('data-tab-id', newTabId);
+                newTab.setAttribute('data-type', 'new-tab');
+                newTab.innerHTML = `
+                    <i class="bi bi-file-earmark"></i>
+                    <span>New Tab</span>
+                    <i class="bi bi-x close-tab-icon"></i>
+                `;
+                tabGroup.insertBefore(newTab, addTabButton);
+                attachTabListeners(newTab, newTabId);
+
+                tabStates[newTabId] = { url: null, searchInput: '', type: 'new-tab' };
+
+                setActiveTab(newTab, newTabId);
+            });
+
             searchInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     const query = this.value.trim();
                     if (!query) return;
 
                     const rawUrl = generateSearchUrl(query);
-                    const encoded = __uv$config.encodeUrl(rawUrl);
-                    const proxyUrl = __uv$config.prefix + encoded;
-                    
-                    window.location.href = proxyUrl;
+                    if (activeTabId && tabStates[activeTabId]) {
+                        tabStates[activeTabId].url = rawUrl;
+                        tabStates[activeTabId].searchInput = query;
+                    }
+                    loadUrl(rawUrl);
                 }
             });
+
+            homeButton.addEventListener('click', showHome);
+            
+            backButton.addEventListener('click', () => {
+                if (iframeContainer.style.display === 'block' && contentFrame.contentWindow) {
+                    contentFrame.contentWindow.history.back();
+                }
+            });
+            
+            forwardButton.addEventListener('click', () => {
+                if (iframeContainer.style.display === 'block' && contentFrame.contentWindow) {
+                    contentFrame.contentWindow.history.forward();
+                }
+            });
+            
+            refreshButton.addEventListener('click', () => {
+                if (iframeContainer.style.display === 'block' && contentFrame.contentWindow) {
+                    contentFrame.contentWindow.location.reload();
+                }
+            });
+
+            contentFrame.addEventListener('load', function() {
+                try {
+                    const currentUrl = contentFrame.contentWindow.location.href;
+                    if (currentUrl.startsWith(window.location.origin + __uv$config.prefix)) {
+                        const decoded = __uv$config.decodeUrl(currentUrl.split(__uv$config.prefix)[1]);
+                        searchInput.value = decoded;
+                        if (activeTabId && tabStates[activeTabId]) {
+                            tabStates[activeTabId].url = decoded;
+                            tabStates[activeTabId].searchInput = decoded;
+                        }
+                    } else if (currentUrl === 'about:blank' || currentUrl.startsWith('blob:') || currentUrl.startsWith('moz-extension:')) {
+                        searchInput.value = '';
+                        if (activeTabId && tabStates[activeTabId]) {
+                            tabStates[activeTabId].searchInput = '';
+                            tabStates[activeTabId].url = null;
+                        }
+                    } else {
+                        searchInput.value = currentUrl;
+                        if (activeTabId && tabStates[activeTabId]) {
+                            tabStates[activeTabId].searchInput = currentUrl;
+                            tabStates[activeTabId].url = currentUrl;
+                        }
+                    }
+                } catch (e) {
+                    if (activeTabId && tabStates[activeTabId]) {
+                         searchInput.value = tabStates[activeTabId].searchInput || 'Unable to display URL';
+                    }
+                }
+            });
+
+            showHome();
         });
     </script>
-</body>
-</html>
+
+<iframe src="https://www.google.com/recaptcha/api2/aframe" width="0" height="0" style="display: none;"></iframe></body><iframe id="google_esf" name="google_esf" src="https://googleads.g.doubleclick.net/pagead/html/r20250605/r20190131/zrt_lookup_fy2021.html" style="display: none;"></iframe></html>
