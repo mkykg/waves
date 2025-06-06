@@ -1,0 +1,750 @@
+<!--Tks to MK(mkykg) for building this entire Games page for waves-->
+<!--Waves's Games | Powered by MK-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games | Waves</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: none;
+            overflow: hidden;
+            color: white;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+        }
+        .background-content {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: -1;
+            background-color: #000;
+        }
+        .top-bar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px 0 10px;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 100;
+            background-image: linear-gradient(to right, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.3) 100%);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        
+        .tab-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 2px;
+        }
+        
+        .tab {
+            display: flex;
+            align-items: center;
+            height: 32px;
+            padding: 0 10px 0 14px;
+            border-radius: 18px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #d8e0e0;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.15s ease-in-out;
+            white-space: nowrap;
+            position: relative;
+        }
+        
+        .tab:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .tab.active {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .tab i.bi {
+            font-size: 16px;
+            margin-right: 6px;
+            color: #ffffff;
+            transform: translateY(-0.5px);
+        }
+        
+        .tab .close-tab-icon {
+            font-size: 12px;
+            margin-left: 8px;
+            color: #c0c0c0;
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.1s ease, color 0.1s ease;
+        }
+        .tab .close-tab-icon:hover {
+            background-color: rgba(255,255,255,0.3);
+            color: #ffffff;
+        }
+        .tab.add-tab {
+            width: 32px;
+            justify-content: center;
+            padding: 0;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        .tab.add-tab i.bi {
+            margin-right: 0;
+            font-size: 18px;
+            transform: translateY(0);
+        }
+
+        .search-bar-wrapper {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            height: 38px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 19px;
+            margin: 0 10px;
+            padding: 0 10px;
+            box-sizing: border-box;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .search-bar-nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: 12px;
+        }
+
+        .search-bar-nav-icons i.bi, .search-bar-right-icons i.bi {
+            font-size: 16px;
+            color: #c0c0c0;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.1s ease;
+        }
+
+        .search-bar-nav-icons i.bi:hover, .search-bar-right-icons i.bi:hover {
+            color: #ffffff;
+        }
+
+        .search-bar-input {
+            flex-grow: 1;
+            height: 100%;
+            border: none;
+            background: none;
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+            padding: 0;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .search-bar-input::placeholder {
+            color: #a0a0a0;
+            opacity: 0.8;
+        }
+
+        .search-bar-right-icons {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 12px;
+        }
+
+        .window-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-left: 10px;
+        }
+
+        .window-controls i.bi {
+            font-size: 16px;
+            color: #e0e0e0;
+            cursor: pointer;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.1s ease, color 0.1s ease;
+            border-radius: 4px;
+        }
+
+        .window-controls i.bi:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .window-controls .bi-x-lg:hover {
+            background-color: #ff605c;
+            color: white;
+        }
+
+        .opera-sidebar {
+            position: fixed;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 56px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 24px;
+            box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px 0;
+            gap: 18px;
+            z-index: 2;
+        }
+        .opera-sidebar .nav-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            margin: 0;
+            background: rgba(0, 0, 0, 0.7);
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+        .opera-sidebar .nav-icon.games-button {
+            background: rgba(101, 67, 33, 0.7);
+        }
+        .opera-sidebar .nav-icon:hover, 
+        .opera-sidebar .nav-icon.active {
+            background: rgba(0, 0, 0, 0.5);
+        }
+        .opera-sidebar .nav-icon.games-button:hover {
+            background: rgba(101, 67, 33, 0.5);
+        }
+        .opera-sidebar .nav-icon i {
+            font-size: 20px;
+        }
+
+        .games-content {
+            position: fixed;
+            top: 48px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 48px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            z-index: 0;
+        }
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 20px;
+            width: 90%;
+            max-width: 800px;
+            margin-top: 20px;
+        }
+        .game-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.15s ease-in-out, background-color 0.15s ease-in-out;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        .game-icon:hover {
+            transform: scale(1.05);
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .game-icon i {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        .game-icon span {
+            font-size: 14px;
+            word-break: break-word;
+        }
+        .waves-overlay {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="%230066cc"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="%230066cc"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%230066cc"/></svg>');
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: -8;
+            animation: waveAnimation 10s linear infinite;
+        }
+        @keyframes waveAnimation {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+        .iframe-container {
+            position: fixed;
+            top: 48px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 48px);
+            border: none;
+            z-index: 1;
+            display: none;
+            background: white;
+        }
+        .iframe-container.active {
+            display: block;
+        }
+        .loading-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            display: none;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .search-results {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            padding: 15px;
+            z-index: 10;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="backgroundContainer" class="background-content"></div>
+    <div class="waves-overlay"></div>
+
+    <div class="top-bar-container">
+        <div class="tab-group" id="tabGroup">
+            <div class="tab active" data-tab-id="games" data-type="games">
+                <i class="bi bi-controller"></i>
+                <span>Games</span>
+                <i class="bi bi-x close-tab-icon"></i>
+            </div>
+            <div class="tab add-tab" id="addTabButton">
+                <i class="bi bi-plus-circle"></i>
+            </div>
+        </div>
+
+        <div class="search-bar-wrapper">
+            <div class="search-bar-nav-icons">
+                <i class="bi bi-arrow-left" id="backButton"></i>
+                <i class="bi bi-arrow-right" id="forwardButton"></i>
+                <i class="bi bi-arrow-clockwise" id="refreshButton"></i>
+            </div>
+            <input type="text" class="search-bar-input" id="searchInput" placeholder="Search for games" autofocus>
+            <div class="search-bar-right-icons">
+                <i class="bi bi-list"></i>
+                <i class="bi bi-grid-3x3-gap"></i>
+                <i class="bi bi-person"></i>
+                <i class="bi bi-box"></i>
+            </div>
+        </div>
+
+        <div class="window-controls">
+            <i class="bi bi-dash-lg"></i>
+            <i class="bi bi-square"></i>
+            <i class="bi bi-x-lg"></i>
+        </div>
+    </div>
+
+    <div class="opera-sidebar">
+        <div class="nav-icon" id="homeButton">
+            <i class="bi bi-house-add-fill"></i>
+        </div>
+        <div class="nav-icon games-button active" id="gamesButton">
+            <i class="bi bi-controller"></i>
+        </div>
+        <div class="nav-icon" id="appsButton">
+            <i class="bi bi-gear-fill"></i>
+        </div>
+        <div class="nav-icon">
+            <i class="bi bi-google-play"></i>
+        </div>
+        <div class="nav-icon">
+            <i class="bi bi-balloon-heart-fill"></i>
+        </div>
+    </div>
+
+    <div class="games-content" id="gamesContent">
+        <div class="game-grid" id="gameGrid">
+            <a href="/games/slope" class="game-icon" data-game-url="/games/slope">
+                <i class="bi bi-controller"></i>
+                <span>Slope</span>
+            </a>
+            <a href="/games/1v1lol" class="game-icon" data-game-url="/games/1v1lol">
+                <i class="bi bi-controller"></i>
+                <span>1v1.LOL</span>
+            </a>
+            <a href="/games/tetris" class="game-icon" data-game-url="/games/tetris">
+                <i class="bi bi-controller"></i>
+                <span>Tetris</span>
+            </a>
+            <a href="/games/2048" class="game-icon" data-game-url="/games/2048">
+                <i class="bi bi-controller"></i>
+                <span>2048</span>
+            </a>
+            <a href="/games/chess" class="game-icon" data-game-url="/games/chess">
+                <i class="bi bi-controller"></i>
+                <span>Chess</span>
+            </a>
+            <a href="/games/geodash" class="game-icon" data-game-url="/games/geodash">
+                <i class="bi bi-controller"></i>
+                <span>Geometry Dash</span>
+            </a>
+            <a href="/games/shell" class="game-icon" data-game-url="/games/shell">
+                <i class="bi bi-controller"></i>
+                <span>Shell Shockers</span>
+            </a>
+            <a href="/games/mminecraft" class="game-icon" data-game-url="/games/mminecraft">
+                <i class="bi bi-controller"></i>
+                <span>Minecraft Classic</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="search-results" id="searchResults">
+        <div class="game-grid" id="searchResultsGrid"></div>
+    </div>
+
+    <iframe class="iframe-container" id="proxyFrame" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+
+    <div class="loading-indicator" id="loadingIndicator">
+        <i class="bi bi-arrow-repeat" style="font-size: 24px; animation: spin 1s linear infinite;"></i>
+        <p>Loading...</p>
+    </div>
+
+    <script src="/active/uv/uv.bundle.js"></script>
+    <script src="/active/uv/uv.config.js"></script>
+    <script src="/active/uv/uv.sw.js"></script>
+    <script src="/assets/js/register.js"></script>
+    <script>
+        const backgroundContainer = document.getElementById('backgroundContainer');
+        const proxyFrame = document.getElementById('proxyFrame');
+        const gamesContent = document.getElementById('gamesContent');
+        const gameGrid = document.getElementById('gameGrid');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        const searchResultsGrid = document.getElementById('searchResultsGrid');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const homeButton = document.getElementById('homeButton');
+        const gamesButton = document.getElementById('gamesButton');
+        const appsButton = document.getElementById('appsButton');
+        const backButton = document.getElementById('backButton');
+        const forwardButton = document.getElementById('forwardButton');
+        const refreshButton = document.getElementById('refreshButton');
+        const tabGroup = document.getElementById('tabGroup');
+        const addTabButton = document.getElementById('addTabButton');
+
+        let tabCounter = 1;
+        let activeTabId = 'games';
+
+        const tabStates = {
+            'games': { url: null, searchInput: '', type: 'games' }
+        };
+
+        const gameList = [
+            { name: 'Slope', url: '/games/slope', icon: 'bi-controller' },
+            { name: '1v1.LOL', url: '/games/1v1lol', icon: 'bi-controller' },
+            { name: 'Tetris', url: '/games/tetris', icon: 'bi-controller' },
+            { name: '2048', url: '/games/2048', icon: 'bi-controller' },
+            { name: 'Chess', url: '/games/chess', icon: 'bi-controller' },
+            { name: 'Geometry Dash', url: '/games/geodash', icon: 'bi-controller' },
+            { name: 'Shell Shockers', url: '/games/shell', icon: 'bi-controller' },
+            { name: 'Minecraft Classic', url: '/games/mminecraft', icon: 'bi-controller' }
+        ];
+
+        const selectedWallpaper = localStorage.getItem('selectedWallpaper');
+        const selectedWallpaperType = localStorage.getItem('selectedWallpaperType');
+
+        if (selectedWallpaper && selectedWallpaperType) {
+            if (selectedWallpaperType === 'video') {
+                backgroundContainer.innerHTML = `<video src="${selectedWallpaper}" autoplay loop muted playsinline class="background-content"></video>`;
+            } else {
+                backgroundContainer.style.backgroundImage = `url(${selectedWallpaper})`;
+                backgroundContainer.style.backgroundSize = 'cover';
+                backgroundContainer.style.backgroundPosition = 'center';
+            }
+        } else {
+            backgroundContainer.style.backgroundImage = `url('R.jpg')`;
+            backgroundContainer.style.backgroundSize = 'cover';
+            backgroundContainer.style.backgroundPosition = 'center';
+        }
+
+        function getProxyUrl(url) {
+            const encoded = __uv$config.encodeUrl(url);
+            return `/active/go/${encoded}`;
+        }
+
+        function loadGame(url) {
+            loadingIndicator.style.display = 'block';
+            const proxyUrl = getProxyUrl(url);
+            
+            proxyFrame.src = proxyUrl;
+            proxyFrame.classList.add('active');
+            gamesContent.style.display = 'none';
+            searchResults.style.display = 'none';
+            
+            proxyFrame.onload = () => {
+                loadingIndicator.style.display = 'none';
+            };
+            
+            proxyFrame.onerror = () => {
+                loadingIndicator.style.display = 'none';
+                alert('Failed to load the game');
+            };
+        }
+
+        function showGames() {
+            proxyFrame.classList.remove('active');
+            proxyFrame.src = '';
+            gamesContent.style.display = 'flex';
+            searchResults.style.display = 'none';
+            searchInput.value = '';
+        }
+
+        function filterGames(query) {
+            if (!query) {
+                searchResults.style.display = 'none';
+                return;
+            }
+            
+            const filteredGames = gameList.filter(game => 
+                game.name.toLowerCase().includes(query.toLowerCase())
+            );
+            
+            searchResultsGrid.innerHTML = '';
+            
+            if (filteredGames.length > 0) {
+                filteredGames.forEach(game => {
+                    const gameElement = document.createElement('a');
+                    gameElement.className = 'game-icon';
+                    gameElement.setAttribute('data-game-url', game.url);
+                    gameElement.innerHTML = `
+                        <i class="bi ${game.icon}"></i>
+                        <span>${game.name}</span>
+                    `;
+                    gameElement.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        loadGame(game.url);
+                    });
+                    searchResultsGrid.appendChild(gameElement);
+                });
+                
+                searchResults.style.display = 'block';
+            } else {
+                searchResults.style.display = 'none';
+            }
+        }
+
+        function attachTabListeners(tabElement, tabId) {
+            tabElement.addEventListener('click', (event) => {
+                if (!event.target.classList.contains('close-tab-icon')) {
+                    setActiveTab(tabElement, tabId);
+                }
+            });
+
+            const closeIcon = tabElement.querySelector('.close-tab-icon');
+            if (closeIcon) {
+                closeIcon.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    const tabToRemove = closeIcon.closest('.tab');
+                    const idToRemove = tabToRemove.dataset.tabId;
+
+                    if (tabGroup.querySelectorAll('.tab').length > 2) {
+                        if (idToRemove === activeTabId) {
+                            showGames();
+                        }
+                        delete tabStates[idToRemove];
+                        tabToRemove.remove();
+                    }
+                });
+            }
+        }
+
+        function setActiveTab(tabElement, tabId) {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            tabElement.classList.add('active');
+            activeTabId = tabId;
+
+            if (tabStates[activeTabId]) {
+                searchInput.value = tabStates[activeTabId].searchInput || '';
+                if (tabStates[activeTabId].url) {
+                    loadGame(tabStates[activeTabId].url);
+                } else if (tabStates[activeTabId].type === 'games') {
+                    showGames();
+                }
+            }
+        }
+
+        searchInput.addEventListener('input', function() {
+            filterGames(this.value.trim());
+        });
+
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const query = this.value.trim();
+                if (!query) return;
+                
+              
+                const matchedGame = gameList.find(game => 
+                    game.name.toLowerCase() === query.toLowerCase()
+                );
+                
+                if (matchedGame) {
+                    loadGame(matchedGame.url);
+                } else {
+                    filterGames(query);
+                }
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!searchResults.contains(e.target) {
+                searchResults.style.display = 'none';
+            }
+        });
+
+      
+        document.querySelectorAll('.game-icon').forEach(icon => {
+            icon.addEventListener('click', function(e) {
+                e.preventDefault();
+                const gameUrl = this.getAttribute('data-game-url');
+                loadGame(gameUrl);
+            });
+        });
+
+        homeButton.addEventListener('click', () => {
+            window.location.href = '/';
+        });
+
+        gamesButton.addEventListener('click', () => {
+            showGames();
+        });
+
+        appsButton.addEventListener('click', () => {
+            window.location.href = '/apps.html';
+        });
+
+        backButton.addEventListener('click', () => {
+            if (proxyFrame.classList.contains('active')) {
+                try {
+                    proxyFrame.contentWindow.history.back();
+                } catch (e) {
+                    console.log('Navigation blocked by CORS');
+                }
+            }
+        });
+
+        forwardButton.addEventListener('click', () => {
+            if (proxyFrame.classList.contains('active')) {
+                try {
+                    proxyFrame.contentWindow.history.forward();
+                } catch (e) {
+                    console.log('Navigation blocked by CORS');
+                }
+            }
+        });
+
+        refreshButton.addEventListener('click', () => {
+            if (proxyFrame.classList.contains('active') && proxyFrame.src) {
+                proxyFrame.src = proxyFrame.src;
+                loadingIndicator.style.display = 'block';
+                
+                proxyFrame.onload = () => {
+                    loadingIndicator.style.display = 'none';
+                };
+            }
+        });
+
+        addTabButton.addEventListener('click', () => {
+            tabCounter++;
+            const newTabId = `tab-${tabCounter}`;
+            const newTab = document.createElement('div');
+            newTab.classList.add('tab');
+            newTab.setAttribute('data-tab-id', newTabId);
+            newTab.setAttribute('data-type', 'new-tab');
+            newTab.innerHTML = `
+                <i class="bi bi-file-earmark"></i>
+                <span>New Tab</span>
+                <i class="bi bi-x close-tab-icon"></i>
+            `;
+            tabGroup.insertBefore(newTab, addTabButton);
+            attachTabListeners(newTab, newTabId);
+
+            tabStates[newTabId] = { url: null, searchInput: '', type: 'new-tab' };
+
+            setActiveTab(newTab, newTabId);
+        });
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const initialGamesTab = document.querySelector('.tab[data-tab-id="games"]');
+            attachTabListeners(initialGamesTab, 'games');
+
+            const path = window.location.pathname;
+            if (path.startsWith('/active/go/')) {
+                proxyFrame.src = window.location.pathname + window.location.search;
+                proxyFrame.classList.add('active');
+                gamesContent.style.display = 'none';
+                searchInput.value = window.location.href;
+            }
+        });
+    </script>
+</body>
+</html>
